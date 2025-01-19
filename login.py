@@ -48,6 +48,7 @@ class Ui_LoginWindow(object):
         self.pushButton_login.setText(_translate("LoginWindow", "Вход"))
 
 
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     LoginWindow = QtWidgets.QMainWindow()
