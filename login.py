@@ -41,3 +41,17 @@ class Ui_LoginWindow(object):
         self.retranslateUi(LoginWindow)
         QtCore.QMetaObject.connectSlotsByName(LoginWindow)
 
+    def retranslateUi(self, LoginWindow):
+        _translate = QtCore.QCoreApplication.translate
+        LoginWindow.setWindowTitle(_translate("LoginWindow", "Login"))
+        self.pushButton_register.setText(_translate("LoginWindow", "Регистрация"))
+        self.pushButton_login.setText(_translate("LoginWindow", "Вход"))
+
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    LoginWindow = QtWidgets.QMainWindow()
+    ui = Ui_LoginWindow()
+    ui.setupUi(LoginWindow)
+    LoginWindow.show()
+    sys.exit(app.exec())
