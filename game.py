@@ -69,6 +69,8 @@ class Entity:
         self.y_speed += self.gravity
         self.rect.y += self.y_speed
 
+
+
         if self.is_dead:
             if self.rect.top > H - GROUND_H:
                 self.is_out = True
