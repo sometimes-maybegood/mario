@@ -83,3 +83,10 @@ class Entity:
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
+class Player(Entity):
+    def __init__(self):
+        super().__init__(player_image)
+        self.respawn()
+
+    def handle_input(self):
+        self.x_speed = 0
