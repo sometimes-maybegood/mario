@@ -115,7 +115,17 @@ class Player(Entity):
     def jump(self):
         self.y_speed = self.jump_speed
 
+class Coin(Entity):
+    def __init__(self, x, y):
+        super().__init__(coin_image)
+        self.rect.topleft = (x, y)
 
+class Flag(Entity):
+    def __init__(self):
+        super().__init__(flag_image)
+        self.rect.topleft = (W - 100, H - GROUND_H - self.rect.height)
+
+#надеюсь, оно работает !!!
 player = Player()
 
 running = True
