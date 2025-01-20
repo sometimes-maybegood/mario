@@ -23,11 +23,6 @@ retry_rect = retry_text.get_rect()
 retry_rect.midtop = (W // 2, H // 2)
 
 score = 0
-
-
-ground_image = pygame.image.load('ground.png')
-ground_image = pygame.transform.scale(ground_image, (804, 60))
-GROUND_H = ground_image.get_height()
 # может в будущем пригодится, тк будем клонировать уровни
 #enemy_image = pygame.image.load('goomba.png')
 #enemy_image = pygame.transform.scale(enemy_image, (80, 80))
@@ -35,8 +30,18 @@ GROUND_H = ground_image.get_height()
 #enemy_dead_image = pygame.image.load('goomba_dead.png')
 #enemy_dead_image = pygame.transform.scale(enemy_dead_image, (80, 80))
 
+ground_image = pygame.image.load('ground.png')
+ground_image = pygame.transform.scale(ground_image, (804, 60))
+GROUND_H = ground_image.get_height()
+
 player_image = pygame.image.load('mario.png')
 player_image = pygame.transform.scale(player_image, (60, 80))
+
+coin_image = pygame.image.load('coin.png')
+coin_image = pygame.transform.scale(coin_image, (30, 30))
+
+flag_image = pygame.image.load('flag.png')
+flag_image = pygame.transform.scale(flag_image, (60, 120))
 
 
 # сущности
