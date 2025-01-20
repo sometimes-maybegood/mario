@@ -37,3 +37,28 @@ GROUND_H = ground_image.get_height()
 
 player_image = pygame.image.load('mario.png')
 player_image = pygame.transform.scale(player_image, (60, 80))
+
+
+# сущности
+
+class Entity:
+    def __init__(self, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.y_speed = 0
+        self.x_speed = 0
+        self.speed = 5
+        self.is_out = False
+        self.is_dead = False
+        self.jump_speed = -12
+        self.gravity = 0.5
+        self.is_grounded = False
+
+    def handle_input(self):
+        pass
+
+    #def kill(self, dead_image):
+        #self.image = dead_image
+        #self.is_dead = True
+        #self.x_speed = -self.x_speed
+        #self.y_speed = self.jump_speed
