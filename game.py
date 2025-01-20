@@ -62,3 +62,31 @@ class Entity:
         #self.is_dead = True
         #self.x_speed = -self.x_speed
         #self.y_speed = self.jump_speed
+
+    def update(self):
+        # движение
+        self.rect.x += self.x_speed
+        self.y_speed += self.gravity
+        self.rect.y += self.y_speed
+
+        if self.is_dead:
+            if self.rect.top > H - GROUND_H:
+                self.is_out = True
+        else:
+            self.handle_input()
+
+            if self.rect.bottom > H - GROUND_H:
+                self.is_grounded = True
+                self.y_speed = 0
+                self.rect.bottom = H - GROUND_H
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+
+class Player(Entity):
+    def __init__(self):
+        super().__init__(player_image)
+        self.respawn()
+
+    def handle_input(self):
+        self.x_speed = 0
