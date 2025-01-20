@@ -111,3 +111,42 @@ class Player(Entity):
 
 
 player = Player()
+
+running = True
+while running:
+    for e in pygame.event.get():
+        if e.type == pygame.QUIT:
+            running = False
+        elif e.type == pygame.KEYDOWN:
+            if player.is_out:
+                score = 0
+                finish_delay = INIT_DELAY
+                last_spawn_time = pygame.time.get_ticks()
+                player.respawn()
+
+    clock.tick(FPS)
+
+    screen.fill((92, 148, 252))
+    screen.blit(ground_image, (0, H - GROUND_H))
+
+    score_surface = font_large.render(str(score), True, (255, 255, 255))
+    score_rect = score_surface.get_rect()
+
+    if player.is_out:
+        score_rect.midbottom = (W // 2, H // 2)
+
+        screen.blit(retry_text, retry_rect)
+    else:
+        now = pygame.time.get_ticks()
+        elapsed = now - last_spawn_time
+
+        player.update()
+        player.draw(screen)
+
+
+        score_rect.midtop = (W // 2, 5)
+
+    screen.blit(score_surface, score_rect)
+
+    pygame.display.flip()
+quit()
