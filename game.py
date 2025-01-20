@@ -22,11 +22,6 @@ retry_rect = retry_text.get_rect()
 retry_rect.midtop = (W // 2, H // 2)
 
 score = 0
-
-
-ground_image = pygame.image.load('ground.png')
-ground_image = pygame.transform.scale(ground_image, (804, 60))
-GROUND_H = ground_image.get_height()
 # может в будущем пригодится, тк будем клонировать уровни
 #enemy_image = pygame.image.load('goomba.png')
 #enemy_image = pygame.transform.scale(enemy_image, (80, 80))
@@ -34,8 +29,18 @@ GROUND_H = ground_image.get_height()
 #enemy_dead_image = pygame.image.load('goomba_dead.png')
 #enemy_dead_image = pygame.transform.scale(enemy_dead_image, (80, 80))
 
+ground_image = pygame.image.load('ground.png')
+ground_image = pygame.transform.scale(ground_image, (804, 60))
+GROUND_H = ground_image.get_height()
+
 player_image = pygame.image.load('mario.png')
 player_image = pygame.transform.scale(player_image, (60, 80))
+
+coin_image = pygame.image.load('coin.png')
+coin_image = pygame.transform.scale(coin_image, (30, 30))
+
+flag_image = pygame.image.load('flag.png')
+flag_image = pygame.transform.scale(flag_image, (60, 120))
 
 
 # сущности
@@ -68,6 +73,8 @@ class Entity:
         self.y_speed += self.gravity
         self.rect.y += self.y_speed
 
+
+
         if self.is_dead:
             if self.rect.top > H - GROUND_H:
                 self.is_out = True
@@ -89,3 +96,64 @@ class Player(Entity):
 
     def handle_input(self):
         self.x_speed = 0
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            self.x_speed = -self.speed
+        elif keys[pygame.K_d]:
+            self.x_speed = self.speed
+
+        if self.is_grounded and keys[pygame.K_SPACE]:
+            self.is_grounded = False
+            self.jump()
+
+    def respawn(self):
+        self.is_out = False
+        self.is_dead = False
+        self.rect.midbottom = (W // 2, H)
+
+    def jump(self):
+        self.y_speed = self.jump_speed
+
+
+player = Player()
+
+running = True
+while running:
+    for e in pygame.event.get():
+        if e.type == pygame.QUIT:
+            running = False
+        elif e.type == pygame.KEYDOWN:
+            if player.is_out:
+                score = 0
+                finish_delay = INIT_DELAY
+                last_spawn_time = pygame.time.get_ticks()
+                player.respawn()
+
+    clock.tick(FPS)
+
+    screen.fill((92, 148, 252))
+    screen.blit(ground_image, (0, H - GROUND_H))
+
+    score_surface = font_large.render(str(score), True, (255, 255, 255))
+    score_rect = score_surface.get_rect()
+
+    if player.is_out:
+        score_rect.midbottom = (W // 2, H // 2)
+
+        screen.blit(retry_text, retry_rect)
+    else:
+        now = pygame.time.get_ticks()
+        elapsed = now - last_spawn_time
+
+        player.update()
+        player.draw(screen)
+
+
+        score_rect.midtop = (W // 2, 5)
+
+    screen.blit(score_surface, score_rect)
+
+    pygame.display.flip()
+quit()
+
