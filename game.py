@@ -90,3 +90,24 @@ class Player(Entity):
 
     def handle_input(self):
         self.x_speed = 0
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            self.x_speed = -self.speed
+        elif keys[pygame.K_d]:
+            self.x_speed = self.speed
+
+        if self.is_grounded and keys[pygame.K_SPACE]:
+            self.is_grounded = False
+            self.jump()
+
+    def respawn(self):
+        self.is_out = False
+        self.is_dead = False
+        self.rect.midbottom = (W // 2, H)
+
+    def jump(self):
+        self.y_speed = self.jump_speed
+
+
+player = Player()
