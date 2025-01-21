@@ -45,5 +45,20 @@ class Ui_MenuWindow(object):
                     }
                 """)
 
+        MenuWindow.setCentralWidget(self.centralwidget)
+        self.retranslateUi(MenuWindow)
+        QtCore.QMetaObject.connectSlotsByName(MenuWindow)
 
+    def retranslateUi(self, MenuWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MenuWindow.setWindowTitle(_translate("MenuWindow", "Menu"))
+        self.pushButton_start.setText(_translate("MenuWindow", "Начать игру"))
+        self.pushButton_record.setText(_translate("MenuWindow", "Рекорд"))
 
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    LoginWindow = QtWidgets.QMainWindow()
+    ui = Ui_MenuWindow()
+    ui.setupUi(LoginWindow)
+    LoginWindow.show()
+    sys.exit(app.exec())
