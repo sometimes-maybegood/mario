@@ -10,16 +10,16 @@ class Ui_MenuWindow(object):
 
         self.background = QtWidgets.QLabel(self.centralwidget)
         self.background.setGeometry(0, 0, 1000, 800)
-        self.background.setPixmap(QtGui.QPixmap("background.jpg"))
+        self.background.setPixmap(QtGui.QPixmap("background.png"))
         self.background.setScaledContents(True)
 
-        self.lineEdit_start = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_start.setGeometry(QtCore.QRect(350, 250, 300, 80))
-        self.lineEdit_start.setObjectName("lineEdit_start")
-        self.lineEdit_start.setPlaceholderText("Начать  игру")
+        self.pushButton_start = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_start.setGeometry(QtCore.QRect(350, 250, 300, 80))
+        self.pushButton_start.setObjectName("pushButton_start")
+        self.pushButton_start.setPlaceholderText("Начать  игру")
 
-        self.lineEdit_record = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_record.setGeometry(QtCore.QRect(350, 250, 200, 60))
-        self.lineEdit_record.setObjectName("lineEdit_record")
-        self.lineEdit_record.setPlaceholderText("Рекорд")
+        self.pushButton_record = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_record.setGeometry(QtCore.QRect(350, 250, 200, 60))
+        self.pushButton_record.setObjectName("pushButton_record")
+        self.pushButton_record.setPlaceholderText("Рекорд")
 
