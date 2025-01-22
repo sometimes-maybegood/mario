@@ -120,7 +120,7 @@ class Camera:
         self.height = height
 
     def apply(self, entity):
-        pass
+        return entity.rect.move(-self.camera.x, -self.camera.y)
 
     def update(self, target):
         pass
