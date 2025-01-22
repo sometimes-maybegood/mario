@@ -22,12 +22,6 @@ retry_rect = retry_text.get_rect()
 retry_rect.midtop = (W // 2, H // 2)
 
 score = 0
-# может в будущем пригодится, тк будем клонировать уровни
-#enemy_image = pygame.image.load('goomba.png')
-#enemy_image = pygame.transform.scale(enemy_image, (80, 80))
-
-#enemy_dead_image = pygame.image.load('goomba_dead.png')
-#enemy_dead_image = pygame.transform.scale(enemy_dead_image, (80, 80))
 
 ground_image = pygame.image.load('ground.png')
 ground_image = pygame.transform.scale(ground_image, (804, 60))
@@ -43,7 +37,6 @@ flag_image = pygame.image.load('flag.png')
 flag_image = pygame.transform.scale(flag_image, (60, 120))
 
 
-# сущности
 
 class Entity:
     def __init__(self, image):
@@ -61,17 +54,12 @@ class Entity:
     def handle_input(self):
         pass
 
-    #def kill(self, dead_image):
-        #self.image = dead_image
-        #self.is_dead = True
-        #self.x_speed = -self.x_speed
-        #self.y_speed = self.jump_speed
 
     def update(self):
-        # движение
+
         self.rect.x += self.x_speed
-        self.y_speed += self.gravity
         self.rect.y += self.y_speed
+        self.y_speed += self.gravity
 
 
 
@@ -125,7 +113,7 @@ class Flag(Entity):
         super().__init__(flag_image)
         self.rect.topleft = (W - 100, H - GROUND_H - self.rect.height)
 
-#надеюсь, оно работает !!!
+
 player = Player()
 
 running = True
