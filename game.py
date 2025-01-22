@@ -8,7 +8,7 @@ screen = pygame.display.set_mode((W, H))
 FPS = 60
 clock = pygame.time.Clock()
 STEP = 10
-
+all_sprites = pygame.sprite.Group()
 font_path = 'mario_font.ttf'
 font_large = pygame.font.Font(font_path, 48)
 font_small = pygame.font.Font(font_path, 24)
@@ -113,21 +113,11 @@ class Flag(Entity):
         super().__init__(flag_image)
         self.rect.topleft = (W - 100, H - GROUND_H - self.rect.height)
 
-class Camera:
-    def __init__(self, width, height):
-        self.camera = pygame.Rect(0, 0, width, height)
-        self.width = width
-        self.height = height
 
-    def apply(self, entity):
-        return entity.rect.move(-self.camera.x, -self.camera.y)
 
-    def update(self, target):
-        pass
 
 
 player = Player()
-camera = Camera(W, H)
 
 running = True
 while running:
@@ -144,7 +134,6 @@ while running:
 
     clock.tick(FPS)
     player.update()
-    camera.update(player)
     screen.fill((92, 148, 252))
     screen.blit(ground_image, (0, H - GROUND_H))
 
