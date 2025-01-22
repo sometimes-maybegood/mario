@@ -7,6 +7,7 @@ screen = pygame.display.set_mode((W, H))
 
 FPS = 60
 clock = pygame.time.Clock()
+STEP = 10
 
 font_path = 'mario_font.ttf'
 font_large = pygame.font.Font(font_path, 48)
@@ -35,7 +36,6 @@ coin_image = pygame.transform.scale(coin_image, (30, 30))
 
 flag_image = pygame.image.load('flag.png')
 flag_image = pygame.transform.scale(flag_image, (60, 120))
-
 
 
 class Entity:
@@ -113,6 +113,18 @@ class Flag(Entity):
         super().__init__(flag_image)
         self.rect.topleft = (W - 100, H - GROUND_H - self.rect.height)
 
+class Camera:
+    def __init__(self, width, height):
+        self.camera = pygame.Rect(0, 0, width, height)
+        self.width = width
+        self.height = height
+
+    def apply(self, entity):
+        pass
+
+    def update(self, target):
+        pass
+
 
 player = Player()
 
@@ -121,12 +133,13 @@ while running:
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             running = False
-        elif e.type == pygame.KEYDOWN:
+        if e.type == pygame.KEYDOWN:
             if player.is_out:
                 score = 0
                 finish_delay = INIT_DELAY
                 last_spawn_time = pygame.time.get_ticks()
                 player.respawn()
+
 
     clock.tick(FPS)
 
