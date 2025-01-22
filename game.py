@@ -127,6 +127,7 @@ class Camera:
 
 
 player = Player()
+camera = Camera(W, H)
 
 running = True
 while running:
@@ -142,7 +143,8 @@ while running:
 
 
     clock.tick(FPS)
-
+    player.update()
+    camera.update(player)
     screen.fill((92, 148, 252))
     screen.blit(ground_image, (0, H - GROUND_H))
 
