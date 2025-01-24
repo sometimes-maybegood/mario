@@ -122,7 +122,14 @@ class Camera:
     def apply(self, entity):
         return entity.rect.move(-self.camera_rect.x, -self.camera_rect.y)
 
-
+    def update(self, target):
+        x = -target.rect.centerx + W // 2
+        y = -target.rect.centery + H // 2
+        x = min(0, x)
+        x = max(-(self.width - W), x)
+        y = min(0, y)
+        y = max(-(self.height - H), y)
+        self.camera_rect.x, self.camera_rect.y = x, y
 
 
 player = Player()
