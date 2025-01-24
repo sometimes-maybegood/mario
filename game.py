@@ -1,4 +1,5 @@
 import pygame
+
 pygame.init()
 
 W = 800
@@ -54,14 +55,10 @@ class Entity:
     def handle_input(self):
         pass
 
-
     def update(self):
-
         self.rect.x += self.x_speed
         self.rect.y += self.y_speed
         self.y_speed += self.gravity
-
-
 
         if self.is_dead:
             if self.rect.top > H - GROUND_H:
@@ -77,6 +74,7 @@ class Entity:
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
+
 class Player(Entity):
     def __init__(self):
         super().__init__(player_image)
@@ -84,7 +82,6 @@ class Player(Entity):
 
     def handle_input(self):
         self.x_speed = 0
-
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.x_speed = -self.speed
@@ -103,10 +100,12 @@ class Player(Entity):
     def jump(self):
         self.y_speed = self.jump_speed
 
+
 class Coin(Entity):
     def __init__(self, x, y):
         super().__init__(coin_image)
         self.rect.topleft = (x, y)
+
 
 class Flag(Entity):
     def __init__(self):
@@ -114,12 +113,21 @@ class Flag(Entity):
         self.rect.topleft = (W - 100, H - GROUND_H - self.rect.height)
 
 
+class Camera:
+    def __init__(self, width, height):
+        self.camera_rect = pygame.Rect(0, 0, width, height)
+        self.width = width
+        self.height = height
+
 
 
 
 player = Player()
+camera_width, camera_height = W * 2, H * 2
+camera = Camera(camera_width, camera_height)
 
 running = True
+
 while running:
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
@@ -131,10 +139,17 @@ while running:
                 last_spawn_time = pygame.time.get_ticks()
                 player.respawn()
 
-
     clock.tick(FPS)
+
     player.update()
+
+    camera.update(player)
+
+    for sprite in all_sprites:
+        camera.apply(sprite)
+
     screen.fill((92, 148, 252))
+
     screen.blit(ground_image, (0, H - GROUND_H))
 
     score_surface = font_large.render(str(score), True, (255, 255, 255))
@@ -146,16 +161,12 @@ while running:
         screen.blit(retry_text, retry_rect)
     else:
         now = pygame.time.get_ticks()
-        elapsed = now - last_spawn_time
 
-        player.update()
         player.draw(screen)
-
-
-        score_rect.midtop = (W // 2, 5)
+    score_rect.midtop = (W // 2 + camera.camera_rect.x, 5)
 
     screen.blit(score_surface, score_rect)
 
     pygame.display.flip()
-quit()
 
+pygame.quit()
