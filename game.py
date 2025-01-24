@@ -119,6 +119,9 @@ class Camera:
         self.width = width
         self.height = height
 
+    def apply(self, entity):
+        return entity.rect.move(-self.camera_rect.x, -self.camera_rect.y)
+
 
 
 
