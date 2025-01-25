@@ -88,6 +88,10 @@ class Player(Entity):
         elif keys[pygame.K_d]:
             self.x_speed = self.speed
 
+
+        if self.rect.x + self.x_speed < 0:
+            self.x_speed = -self.rect.x
+
         if self.is_grounded and keys[pygame.K_SPACE]:
             self.is_grounded = False
             self.jump()
@@ -99,7 +103,6 @@ class Player(Entity):
 
     def jump(self):
         self.y_speed = self.jump_speed
-
 
 class Coin(Entity):
     def __init__(self, x, y):
