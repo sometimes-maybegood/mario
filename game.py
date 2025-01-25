@@ -149,7 +149,7 @@ class Camera:
 class Castle(Entity):
     def __init__(self):
         super().__init__(castle_image_no_bg)
-        self.rect.topleft = (W - 100, H - GROUND_H - self.rect.height + 30)
+        self.rect.topleft = (W + 2500, H - GROUND_H - self.rect.height + 30)
 
 
 castle = Castle()
@@ -204,7 +204,6 @@ while running:
     if player.is_out:
         retry_rect.midtop = (W // 2, H // 2)
         screen.blit(retry_text, retry_rect)
-
     pygame.display.flip()
 
 pygame.quit()
