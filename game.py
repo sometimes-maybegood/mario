@@ -143,6 +143,13 @@ class Camera:
         self.y = target.rect.centery - self.height // 2
 
 
+class Castle(Entity):
+    def __init__(self):
+        super().__init__(castle_image_no_bg)
+        self.rect.topleft = (W - 100, H - GROUND_H - self.rect.height)
+
+
+castle = Castle()
 player = Player()
 camera = Camera(W, H)
 
@@ -182,6 +189,7 @@ while running:
     for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
         screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 240))
 
+    castle.draw(screen, camera)
     player.draw(screen, camera)
 
     score_surface = font_large.render(str(score), True, (255, 255, 255))
