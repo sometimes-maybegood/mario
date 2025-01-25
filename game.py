@@ -152,19 +152,19 @@ while running:
 
     screen.fill((92, 148, 252))
 
-    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) + 1):
+    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
         screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y))
 
-    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) + 1):
+    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
         screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 60))
 
-    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) + 1):
+    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
         screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
 
-    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) + 1):
+    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
         screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 180))
 
-    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) + 1):
+    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
         screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 240))
 
     player.draw(screen, camera)
