@@ -1,4 +1,8 @@
 import pygame
+from rembg.bg import remove
+import numpy as np
+import io
+from PIL import Image
 
 pygame.init()
 
@@ -37,6 +41,14 @@ coin_image = pygame.transform.scale(coin_image, (30, 30))
 
 flag_image = pygame.image.load('flag.png')
 flag_image = pygame.transform.scale(flag_image, (60, 120))
+
+input_path = 'castle.jpg'
+output_path = 'castle_no_bg.png'
+
+f = np.fromfile(input_path)
+result = remove(f)
+img = Image.open(io.BytesIO(result)).convert("RGBA")
+img.save(output_path)
 
 
 class Entity:
