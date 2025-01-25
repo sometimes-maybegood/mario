@@ -1,6 +1,5 @@
 import pygame
 from PIL import Image
-import sys
 
 pygame.init()
 
@@ -152,7 +151,6 @@ class Castle(Entity):
         super().__init__(castle_image_no_bg)
         self.rect.topleft = (W + 2500, H - GROUND_H - self.rect.height + 30)
 
-
 castle = Castle()
 player = Player()
 camera = Camera(W, H)
@@ -173,10 +171,6 @@ while running:
     clock.tick(FPS)
 
     player.update()
-
-    if player.rect.colliderect(castle.rect):
-        pygame.quit()
-        exec(open('level2.py').read())
 
     camera.update(player)
 
@@ -209,6 +203,7 @@ while running:
     if player.is_out:
         retry_rect.midtop = (W // 2, H // 2)
         screen.blit(retry_text, retry_rect)
+
     pygame.display.flip()
 
 pygame.quit()
