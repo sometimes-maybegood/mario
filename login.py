@@ -12,7 +12,7 @@ class Ui_LoginWindow(object):
 
         self.background = QtWidgets.QLabel(self.centralwidget)
         self.background.setGeometry(0, 0, 400, 300)
-        self.background.setPixmap(QtGui.QPixmap("background.png"))
+        self.background.setPixmap(QtGui.QPixmap("background.jpg"))
         self.background.setScaledContents(True)
 
         self.lineEdit_username = QtWidgets.QLineEdit(self.centralwidget)
