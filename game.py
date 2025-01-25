@@ -1,7 +1,4 @@
 import pygame
-from rembg.bg import remove
-import numpy as np
-import io
 from PIL import Image
 
 pygame.init()
@@ -42,16 +39,22 @@ coin_image = pygame.transform.scale(coin_image, (30, 30))
 flag_image = pygame.image.load('flag.png')
 flag_image = pygame.transform.scale(flag_image, (60, 120))
 
-input_path = 'castle.jpg'
-output_path = 'castle_no_bg.png'
+img = Image.open('castle.jpg')
+img = img.convert('RGBA')
 
-f = np.fromfile(input_path)
-result = remove(f)
-img = Image.open(io.BytesIO(result)).convert("RGBA")
-img.save(output_path)
+new_img = Image.new('RGBA', img.size, (0, 0, 0, 0))
+
+threshold = 240
+for x in range(img.size[0]):
+    for y in range(img.size[1]):
+        pixel = img.getpixel((x, y))
+        if pixel[0] < threshold or pixel[1] < threshold or pixel[2] < threshold:
+            new_img.putpixel((x, y), pixel)
+
+new_img.save('castle_no_bg.png')
 
 castle_image_no_bg = pygame.image.load('castle_no_bg.png')
-castle_image_no_bg = pygame.transform.scale(castle_image_no_bg, (60, 60))
+castle_image_no_bg = pygame.transform.scale(castle_image_no_bg, (500, 300))
 
 
 class Entity:
@@ -189,9 +192,7 @@ while running:
     for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
         screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 240))
 
-    castle.rect.topleft = (
-        (int((W + ground_image.get_width()) / ground_image.get_width()) * 4) * ground_image.get_width() - camera.x,
-        H - GROUND_H - camera.y - castle.rect.height)
+    screen.blit(castle_image_no_bg, (ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 240))
 
     castle.draw(screen, camera)
     player.draw(screen, camera)
