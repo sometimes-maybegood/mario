@@ -130,6 +130,7 @@ class Camera:
 
 player = Player()
 camera = Camera(W, H)
+
 running = True
 
 while running:
@@ -151,7 +152,12 @@ while running:
 
     screen.fill((92, 148, 252))
 
-    screen.blit(ground_image, (0 - camera.x, H - GROUND_H - camera.y))
+    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) + 1):
+        screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y))
+
+    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) + 1):
+        screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 60))
+
 
     player.draw(screen, camera)
 
