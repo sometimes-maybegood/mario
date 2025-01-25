@@ -50,6 +50,9 @@ result = remove(f)
 img = Image.open(io.BytesIO(result)).convert("RGBA")
 img.save(output_path)
 
+castle_image_no_bg = pygame.image.load('castle_no_bg.png')
+castle_image_no_bg = pygame.transform.scale(castle_image_no_bg, (60, 60))
+
 
 class Entity:
     def __init__(self, image):
