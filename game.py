@@ -71,8 +71,8 @@ class Entity:
                 self.y_speed = 0
                 self.rect.bottom = H - GROUND_H
 
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
+    def draw(self, surface, camera):
+        surface.blit(self.image, (self.rect.x - camera.x, self.rect.y - camera.y))
 
 
 class Player(Entity):
@@ -87,7 +87,6 @@ class Player(Entity):
             self.x_speed = -self.speed
         elif keys[pygame.K_d]:
             self.x_speed = self.speed
-
 
         if self.rect.x + self.x_speed < 0:
             self.x_speed = -self.rect.x
@@ -104,6 +103,7 @@ class Player(Entity):
     def jump(self):
         self.y_speed = self.jump_speed
 
+
 class Coin(Entity):
     def __init__(self, x, y):
         super().__init__(coin_image)
@@ -118,27 +118,18 @@ class Flag(Entity):
 
 class Camera:
     def __init__(self, width, height):
-        self.camera_rect = pygame.Rect(0, 0, width, height)
+        self.x = 0
+        self.y = 0
         self.width = width
         self.height = height
 
-    def apply(self, entity):
-        return entity.rect.move(-self.camera_rect.x, -self.camera_rect.y)
-
     def update(self, target):
-        x = -target.rect.centerx + W // 2
-        y = -target.rect.centery + H // 2
-        x = min(0, x)
-        x = max(-(self.width - W), x)
-        y = min(0, y)
-        y = max(-(self.height - H), y)
-        self.camera_rect.x, self.camera_rect.y = x, y
+        self.x = target.rect.centerx - self.width // 2
+        self.y = target.rect.centery - self.height // 2
 
 
 player = Player()
-camera_width, camera_height = W * 2, H * 2
-camera = Camera(camera_width, camera_height)
-
+camera = Camera(W, H)
 running = True
 
 while running:
@@ -158,27 +149,21 @@ while running:
 
     camera.update(player)
 
-    for sprite in all_sprites:
-        camera.apply(sprite)
-
     screen.fill((92, 148, 252))
 
-    screen.blit(ground_image, (0, H - GROUND_H))
+    screen.blit(ground_image, (0 - camera.x, H - GROUND_H - camera.y))
+
+    player.draw(screen, camera)
 
     score_surface = font_large.render(str(score), True, (255, 255, 255))
     score_rect = score_surface.get_rect()
-
-    if player.is_out:
-        score_rect.midbottom = (W // 2, H // 2)
-
-        screen.blit(retry_text, retry_rect)
-    else:
-        now = pygame.time.get_ticks()
-
-        player.draw(screen)
-    score_rect.midtop = (W // 2 + camera.camera_rect.x, 5)
+    score_rect.midtop = (W // 2, 5)
 
     screen.blit(score_surface, score_rect)
+
+    if player.is_out:
+        retry_rect.midtop = (W // 2, H // 2)
+        screen.blit(retry_text, retry_rect)
 
     pygame.display.flip()
 
