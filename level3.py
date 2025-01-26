@@ -25,6 +25,8 @@ retry_text = font_small.render('PRESS ANY KEY', True, (255, 255, 255))
 retry_rect = retry_text.get_rect()
 retry_rect.midtop = (W // 2, H // 2)
 
+goomba_image = pygame.image.load('goomba.jpg')
+goomba_image = pygame.transform.scale(goomba_image, (50, 50))
 
 block_image = pygame.image.load('block.jpg')
 block_image = pygame.transform.scale(block_image, (60, 60))
