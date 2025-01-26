@@ -24,8 +24,6 @@ retry_text = font_small.render('PRESS ANY KEY', True, (255, 255, 255))
 retry_rect = retry_text.get_rect()
 retry_rect.midtop = (W // 2, H // 2)
 
-score = 0
-
 block_image = pygame.image.load('block.jpg')
 block_image = pygame.transform.scale(block_image, (60, 60))
 GROUND_H = block_image.get_height()
