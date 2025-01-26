@@ -26,9 +26,9 @@ retry_rect.midtop = (W // 2, H // 2)
 
 score = 0
 
-ground_image = pygame.image.load('ground.png')
-ground_image = pygame.transform.scale(ground_image, (804, 60))
-GROUND_H = ground_image.get_height()
+block_image = pygame.image.load('block.jpg')
+block_image = pygame.transform.scale(block_image, (60, 60))
+GROUND_H = block_image.get_height()
 
 player_image = pygame.image.load('mario.png')
 player_image = pygame.transform.scale(player_image, (60, 80))
@@ -84,10 +84,18 @@ class Entity:
         else:
             self.handle_input()
 
-            if self.rect.bottom > H - GROUND_H:
+            for block in ground_blocks:
+                if self.rect.bottom > block[1] and self.rect.centerx > block[0] and self.rect.centerx < block[
+                    0] + block_image.get_width():
+                    self.is_grounded = True
+                    self.y_speed = 0
+                    self.rect.bottom = block[1]
+
+            if self.rect.colliderect(
+                    pygame.Rect(ladder_x, ladder_y, block_image.get_width(), block_image.get_height())):
                 self.is_grounded = True
                 self.y_speed = 0
-                self.rect.bottom = H - GROUND_H
+                self.rect.bottom = ladder_y
 
     def draw(self, surface, camera):
         surface.blit(self.image, (self.rect.x - camera.x, self.rect.y - camera.y))
@@ -149,11 +157,30 @@ class Camera:
 class Castle(Entity):
     def __init__(self):
         super().__init__(castle_image_no_bg)
-        self.rect.topleft = (W + 2500, H - GROUND_H - self.rect.height + 30)
+        self.rect.topleft = (W + 1400, H - GROUND_H - self.rect.height + 30)
+
 
 castle = Castle()
 player = Player()
 camera = Camera(W, H)
+
+castle_end_x = castle.rect.right
+
+ground_blocks = []
+for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+    for j in range(5):
+        ground_x = i * block_image.get_width()
+        ground_y = H - GROUND_H + j * block_image.get_height()
+
+        if i >= 10 and i <= 15:
+            ground_y -= 60
+        elif i >= 20 and i <= 25:
+            ground_y += 60
+
+        ground_blocks.append((ground_x, ground_y))
+
+ladder_x = 1000
+ladder_y = H - GROUND_H - 300
 
 running = True
 
@@ -172,24 +199,30 @@ while running:
 
     player.update()
 
+    if player.rect.right >= castle_end_x:
+        pygame.quit()
+        exec(open('level2.py').read())
+
     camera.update(player)
 
     screen.fill((92, 148, 252))
 
-    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
-        screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y))
+    for block in ground_blocks:
+        screen.blit(block_image, (block[0] - camera.x, block[1] - camera.y))
 
-    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
-        screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 60))
+    screen.blit(block_image, (ladder_x - camera.x, ladder_y - camera.y))
 
-    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
-        screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
 
-    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
-        screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 180))
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 180))
 
-    for i in range(int((W + ground_image.get_width()) / ground_image.get_width()) * 4 + 1):
-        screen.blit(ground_image, (i * ground_image.get_width() - camera.x, H - GROUND_H - camera.y + 240))
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 240))
+
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 300))
 
     castle.draw(screen, camera)
     player.draw(screen, camera)
@@ -203,7 +236,6 @@ while running:
     if player.is_out:
         retry_rect.midtop = (W // 2, H // 2)
         screen.blit(retry_text, retry_rect)
-
     pygame.display.flip()
 
 pygame.quit()
