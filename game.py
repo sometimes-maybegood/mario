@@ -207,6 +207,23 @@ while running:
 
     screen.fill((92, 148, 252))
 
+    for block in ground_blocks:
+        screen.blit(block_image, (block[0] - camera.x, block[1] - camera.y))
+
+    screen.blit(block_image, (ladder_x - camera.x, ladder_y - camera.y))
+
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
+
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 180))
+
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 240))
+
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 300))
+
     castle.draw(screen, camera)
     player.draw(screen, camera)
 
