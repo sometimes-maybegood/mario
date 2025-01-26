@@ -166,6 +166,22 @@ camera = Camera(W, H)
 
 castle_end_x = castle.rect.right
 
+ground_blocks = []
+for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+    for j in range(5):
+        ground_x = i * block_image.get_width()
+        ground_y = H - GROUND_H + j * block_image.get_height()
+
+        if i >= 10 and i <= 15:
+            ground_y -= 60
+        elif i >= 20 and i <= 25:
+            ground_y += 60
+
+        ground_blocks.append((ground_x, ground_y))
+
+ladder_x = 1000
+ladder_y = H - GROUND_H - 300
+
 running = True
 
 while running:
