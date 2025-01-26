@@ -1,6 +1,5 @@
 import pygame
 from PIL import Image
-import sys
 
 pygame.init()
 
@@ -39,6 +38,9 @@ coin_image = pygame.transform.scale(coin_image, (30, 30))
 
 flag_image = pygame.image.load('flag.png')
 flag_image = pygame.transform.scale(flag_image, (60, 120))
+
+ground_image = pygame.image.load('block.jpg')
+ground_image = pygame.transform.scale(ground_image, (60, 60))
 
 img = Image.open('castle.jpg')
 img = img.convert('RGBA')
