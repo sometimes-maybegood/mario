@@ -156,6 +156,7 @@ class Castle(Entity):
 castle = Castle()
 player = Player()
 camera = Camera(W, H)
+castle_end_x = castle.rect.right
 
 running = True
 
@@ -174,7 +175,7 @@ while running:
 
     player.update()
 
-    if player.rect.colliderect(castle.rect):
+    if player.rect.right >= castle_end_x:
         pygame.quit()
         exec(open('level2.py').read())
 
