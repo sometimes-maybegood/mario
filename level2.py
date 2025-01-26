@@ -91,6 +91,34 @@ class Entity:
         pass
 
     def update(self):
+        self.rect.x += self.x_speed
+        self.rect.y += self.y_speed
+        self.y_speed += self.gravity
+
+        if self.is_dead:
+            if self.rect.top > H - GROUND_H:
+                self.is_out = True
+        else:
+            self.handle_input()
+            for block in ground_blocks + ladder_blocks + solid_blocks:
+                if self.rect.colliderect(
+                        pygame.Rect(block[0], block[1], block_image.get_width(), block_image.get_height())):
+                    if self.y_speed > 0:
+                        self.is_grounded = True
+                        self.y_speed = 0
+                        self.rect.bottom = block[1]
+                    elif self.y_speed < 0:
+                        self.y_speed = 0
+                        self.rect.top = block[1] - self.rect.height
+
+            for coin_block in coin_blocks:
+                if self.rect.colliderect(
+                        pygame.Rect(coin_block[0], coin_block[1], block_image.get_width(), block_image.get_height())):
+                    if self.y_speed < 0:
+                        coins.append(
+                            (coin_block[0] + block_image.get_width() // 2, coin_block[1] - coin_image.get_height()))
+                        coin_blocks.remove(coin_block)
+                        solid_blocks.append((coin_block[0], coin_block[1]))
 
     def draw(self, surface, camera):
         surface.blit(self.image, (self.rect.x - camera.x, self.rect.y - camera.y))
