@@ -1,0 +1,248 @@
+import pygame
+from PIL import Image
+
+pygame.init()
+
+W = 800
+H = 600
+screen = pygame.display.set_mode((W, H))
+
+FPS = 60
+clock = pygame.time.Clock()
+STEP = 10
+all_sprites = pygame.sprite.Group()
+font_path = 'mario_font.ttf'
+font_large = pygame.font.Font(font_path, 48)
+font_small = pygame.font.Font(font_path, 24)
+INIT_DELAY = 2000
+spawn_delay = INIT_DELAY
+DECREASE_BASE = 1.01
+last_spawn_time = pygame.time.get_ticks()
+
+game_over = False
+retry_text = font_small.render('PRESS ANY KEY', True, (255, 255, 255))
+retry_rect = retry_text.get_rect()
+retry_rect.midtop = (W // 2, H // 2)
+
+score = 0
+
+block_image = pygame.image.load('block.jpg')
+block_image = pygame.transform.scale(block_image, (60, 60))
+GROUND_H = block_image.get_height()
+
+coin_block_image = pygame.image.load('coin_block.jpg')
+coin_block_image = pygame.transform.scale(coin_block_image, (60, 60))
+
+player_image = pygame.image.load('mario.png')
+player_image = pygame.transform.scale(player_image, (50, 75))
+
+flag_image = pygame.image.load('flag.png')
+flag_image = pygame.transform.scale(flag_image, (60, 120))
+
+img = Image.open('castle.jpg')
+img = img.convert('RGBA')
+
+new_img = Image.new('RGBA', img.size, (0, 0, 0, 0))
+
+threshold = 240
+for x in range(img.size[0]):
+    for y in range(img.size[1]):
+        pixel = img.getpixel((x, y))
+        if pixel[0] < threshold or pixel[1] < threshold or pixel[2] < threshold:
+            new_img.putpixel((x, y), pixel)
+
+new_img.save('castle_no_bg.png')
+
+castle_image_no_bg = pygame.image.load('castle_no_bg.png')
+castle_image_no_bg = pygame.transform.scale(castle_image_no_bg, (500, 300))
+
+img1 = Image.open('coin.png')
+img1 = img1.convert('RGBA')
+
+new_img1 = Image.new('RGBA', img1.size, (0, 0, 0, 0))
+
+threshold = 240
+for x in range(img1.size[0]):
+    for y in range(img1.size[1]):
+        pixel1 = img1.getpixel((x, y))
+        if pixel1[0] < threshold or pixel1[1] < threshold or pixel1[2] < threshold:
+            new_img1.putpixel((x, y), pixel1)
+
+new_img1.save('coin_new.png')
+
+coin_image = pygame.image.load('coin_new.png')
+coin_image = pygame.transform.scale(coin_image, (50, 30))
+
+
+class Entity:
+    def __init__(self, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.y_speed = 0
+        self.x_speed = 0
+        self.speed = 5
+        self.is_out = False
+        self.is_dead = False
+        self.jump_speed = -12
+        self.gravity = 0.5
+        self.is_grounded = False
+
+    def handle_input(self):
+        pass
+
+    def update(self):
+
+    def draw(self, surface, camera):
+        surface.blit(self.image, (self.rect.x - camera.x, self.rect.y - camera.y))
+
+
+class Player(Entity):
+    def __init__(self):
+        super().__init__(player_image)
+        self.respawn()
+
+    def handle_input(self):
+        self.x_speed = 0
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            self.x_speed = -self.speed
+        elif keys[pygame.K_d]:
+            self.x_speed = self.speed
+
+        if self.rect.x + self.x_speed < 0:
+            self.x_speed = -self.rect.x
+
+        if self.is_grounded and keys[pygame.K_SPACE]:
+            self.is_grounded = False
+            self.jump()
+
+    def respawn(self):
+        self.is_out = False
+        self.is_dead = False
+        self.rect.midbottom = (W // 2, H)
+
+    def jump(self):
+        self.y_speed = self.jump_speed
+
+
+class Coin(Entity):
+    def __init__(self, x, y):
+        super().__init__(coin_image)
+        self.rect.topleft = (x, y)
+
+
+class Flag(Entity):
+    def __init__(self):
+        super().__init__(flag_image)
+        self.rect.topleft = (W - 100, H - GROUND_H - self.rect.height)
+
+
+class Camera:
+    def __init__(self, width, height):
+        self.x = 0
+        self.y = 0
+        self.width = width
+        self.height = height
+
+    def update(self, target):
+        self.x = target.rect.centerx - self.width // 2
+        self.y = target.rect.centery - self.height // 2
+
+
+class Castle(Entity):
+    def __init__(self):
+        super().__init__(castle_image_no_bg)
+        self.rect.topleft = (W + 1400, H - GROUND_H - self.rect.height + 30)
+
+
+castle = Castle()
+player = Player()
+camera = Camera(W, H)
+
+castle_end_x = castle.rect.right
+
+ground_blocks = []
+for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+    for j in range(5):
+        ground_x = i * block_image.get_width()
+        ground_y = H - GROUND_H + j * block_image.get_height()
+
+        if i >= 10 and i <= 15:
+            ground_y -= 60
+        elif i >= 20 and i <= 25:
+            ground_y += 60
+
+        ground_blocks.append((ground_x, ground_y))
+
+ladder_blocks = []
+ladder_x = 1000
+ladder_y = H - GROUND_H
+for i in range(4):
+    ladder_blocks.append((ladder_x, ladder_y - i * block_image.get_height()))
+
+coin_blocks = []
+for i in range(5):
+    coin_x = 1200 + i * block_image.get_width()
+    coin_y = H - GROUND_H - 3 * block_image.get_height()
+    coin_blocks.append((coin_x, coin_y))
+
+solid_blocks = []
+coins = []
+
+ladder_x = 1000
+ladder_y = H - GROUND_H - 300
+
+running = True
+
+while running:
+    for e in pygame.event.get():
+        if e.type == pygame.QUIT:
+            running = False
+        if e.type == pygame.KEYDOWN:
+            if player.is_out:
+                score = 0
+                finish_delay = INIT_DELAY
+                last_spawn_time = pygame.time.get_ticks()
+                player.respawn()
+
+    clock.tick(FPS)
+
+    player.update()
+
+    if player.rect.right >= castle_end_x:
+        pygame.quit()
+        exec(open('level2.py').read())
+
+    camera.update(player)
+
+    screen.fill((92, 148, 252))
+
+
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
+
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 180))
+
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 240))
+
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+        screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 300))
+
+    castle.draw(screen, camera)
+    player.draw(screen, camera)
+
+
+    score_surface = font_large.render(str(score), True, (255, 255, 255))
+    score_rect = score_surface.get_rect()
+    score_rect.midtop = (W // 2, 5)
+
+    screen.blit(score_surface, score_rect)
+
+    if player.is_out:
+        retry_rect.midtop = (W // 2, H // 2)
+        screen.blit(retry_text, retry_rect)
+    pygame.display.flip()
+
+pygame.quit()
