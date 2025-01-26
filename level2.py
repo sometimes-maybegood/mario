@@ -217,6 +217,20 @@ while running:
 
     screen.fill((92, 148, 252))
 
+    for block in ground_blocks:
+        screen.blit(block_image, (block[0] - camera.x, block[1] - camera.y))
+
+    for ladder_block in ladder_blocks:
+        screen.blit(block_image, (ladder_block[0] - camera.x, ladder_block[1] - camera.y))
+
+    for coin_block in coin_blocks:
+        screen.blit(coin_block_image, (coin_block[0] - camera.x, coin_block[1] - camera.y))
+
+    for solid_block in solid_blocks:
+        screen.blit(block_image, (solid_block[0] - camera.x, solid_block[1] - camera.y))
+
+    for coin in coins:
+        screen.blit(coin_image, (coin[0] - camera.x, coin[1] - camera.y))
 
     for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
@@ -233,6 +247,10 @@ while running:
     castle.draw(screen, camera)
     player.draw(screen, camera)
 
+    for coin in coins[:]:
+        if player.rect.colliderect(pygame.Rect(coin[0], coin[1], coin_image.get_width(), coin_image.get_height())):
+            coins.remove(coin)
+            score += 1
 
     score_surface = font_large.render(str(score), True, (255, 255, 255))
     score_rect = score_surface.get_rect()
