@@ -156,6 +156,7 @@ class Castle(Entity):
 castle = Castle()
 player = Player()
 camera = Camera(W, H)
+
 castle_end_x = castle.rect.right
 
 running = True
