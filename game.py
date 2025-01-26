@@ -201,7 +201,7 @@ while running:
 
     if player.rect.right >= castle_end_x:
         pygame.quit()
-        exec(open('level2.py').read())
+        exec(open('level3.py').read())
 
     camera.update(player)
 
