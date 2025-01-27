@@ -1,5 +1,6 @@
 import pygame
 from PIL import Image
+from random import randint
 
 pygame.init()
 
@@ -348,7 +349,7 @@ for i in range(8):
 lasers = []
 laser_x = W + 2000
 laser_y = H // 2
-lasers.append(Laser(laser_x, laser_y, 10))
+lasers.append(Laser(laser_x, laser_y, randint(2, 5)))
 
 solid_blocks = []
 coins = []
@@ -416,7 +417,7 @@ while running:
             laser.fireballs = []
             laser_x = W + 2000
             laser_y = H // 2
-            lasers[0] = Laser(laser_x, laser_y, 10)
+            lasers[0] = Laser(laser_x, laser_y, randint(2, 5))
 
     for laser in lasers:
         laser.draw(screen, camera)
