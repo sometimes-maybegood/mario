@@ -73,7 +73,7 @@ new_img1.save('images/coin_new.png')
 coin_image = pygame.image.load('images/coin_new.png')
 coin_image = pygame.transform.scale(coin_image, (50, 30))
 
-img2 = Image.open('goomba.jpg')
+img2 = Image.open('images/goomba.jpg')
 img2 = img2.convert('RGBA')
 
 new_img2 = Image.new('RGBA', img2.size, (0, 0, 0, 0))
