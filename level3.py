@@ -89,9 +89,9 @@ for x in range(img2.size[0]):
         if pixel2[0] < threshold or pixel2[1] < threshold or pixel2[2] < threshold:
             new_img2.putpixel((x, y), pixel2)
 
-new_img2.save('goomba_new.png')
+new_img2.save('images/goomba_new.png')
 
-goomba_image = pygame.image.load('goomba_new.png')
+goomba_image = pygame.image.load('images/goomba_new.png')
 goomba_image = pygame.transform.scale(goomba_image, (50, 50))
 
 
