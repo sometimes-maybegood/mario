@@ -188,7 +188,8 @@ class Player(Entity):
         for i in range(8):
             goomba_x = 1500 + i * 200
             goomba_y = H - GROUND_H - goomba_image.get_height()
-            goombas.append(Goomba(goomba_x, goomba_y))
+            path = (1610 + i * 200, 1755 + i * 200)
+            goombas.append(Goomba(goomba_x, goomba_y, path))
 
     def jump(self):
         self.y_speed = self.jump_speed
@@ -211,10 +212,11 @@ class Player(Entity):
 
 
 class Goomba(Entity):
-    def __init__(self, x, y):
+    def __init__(self, x, y, path):
         super().__init__(goomba_image)
         self.rect.topleft = (x, y)
         self.speed = 1
+        self.path = path
         self.direction = -1
 
     def handle_input(self):
@@ -224,9 +226,19 @@ class Goomba(Entity):
         super().update()
         self.rect.x += self.x_speed
 
-        if self.rect.left <= 0:
+        for block in ground_blocks + ladder_blocks + solid_blocks:
+            if self.rect.colliderect(
+                    pygame.Rect(block[0], block[1], block_image.get_width(), block_image.get_height())):
+                if self.y_speed > 0:
+                    self.y_speed = 0
+                    self.rect.bottom = block[1]
+                elif self.y_speed < 0:
+                    self.y_speed = 0
+                    self.rect.top = block[1] - self.rect.height
+
+        if self.rect.left < self.path[0]:
             self.speed = -1
-        elif self.rect.right >= W + 2200:
+        elif self.rect.right > self.path[1]:
             self.speed = 1
 
 
@@ -299,7 +311,8 @@ goombas = []
 for i in range(8):
     goomba_x = 1500 + i * 200
     goomba_y = H - GROUND_H - goomba_image.get_height()
-    goombas.append(Goomba(goomba_x, goomba_y))
+    path = (1610 + i * 200, 1755 + i * 200)
+    goombas.append(Goomba(goomba_x, goomba_y, path))
 
 solid_blocks = []
 coins = []
