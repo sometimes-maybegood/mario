@@ -225,6 +225,23 @@ class Player(Entity):
             self.is_out = True
 
 
+class Laser:
+    def __init__(self, x, y, num_fireballs):
+        self.fireballs = []
+        for i in range(num_fireballs):
+            fireball_x = x + i * fireball_image.get_width()
+            fireball_y = y
+            self.fireballs.append((fireball_x, fireball_y))
+
+    def update(self):
+        for i, (fireball_x, fireball_y) in enumerate(self.fireballs):
+            self.fireballs[i] = (fireball_x - 5, fireball_y)
+
+    def draw(self, surface, camera):
+        for fireball_x, fireball_y in self.fireballs:
+            surface.blit(fireball_image, (fireball_x - camera.x, fireball_y - camera.y))
+
+
 class Goomba(Entity):
     def __init__(self, x, y, path):
         super().__init__(goomba_image)
@@ -306,7 +323,7 @@ for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 6 
 ladder_blocks = []
 ladder_x = 1000
 ladder_y = H - GROUND_H
-for i in range(5):
+for i in range(4):
     ladder_blocks.append((ladder_x, ladder_y - i * block_image.get_height()))
 
 coin_blocks = []
@@ -321,6 +338,11 @@ for i in range(8):
     goomba_y = H - GROUND_H - goomba_image.get_height()
     path = (1610 + i * 200, 1755 + i * 200)
     goombas.append(Goomba(goomba_x, goomba_y, path))
+
+lasers = []
+laser_x = W + 2000
+laser_y = H // 2
+lasers.append(Laser(laser_x, laser_y, 10))
 
 solid_blocks = []
 coins = []
@@ -381,6 +403,17 @@ while running:
 
     for goomba in goombas:
         screen.blit(goomba.image, (goomba.rect.x - camera.x, goomba.rect.y - camera.y))
+
+    for laser in lasers:
+        laser.update()
+        if laser.fireballs[0][0] < 0:
+            laser.fireballs = []
+            laser_x = W + 2000
+            laser_y = H // 2
+            lasers[0] = Laser(laser_x, laser_y, 10)
+
+    for laser in lasers:
+        laser.draw(screen, camera)
 
     for i in range(int((W + block_image.get_width()) + 1)):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
