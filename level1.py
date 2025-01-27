@@ -36,9 +36,6 @@ player_image = pygame.transform.scale(player_image, (60, 80))
 coin_image = pygame.image.load('images/coin.png')
 coin_image = pygame.transform.scale(coin_image, (30, 30))
 
-flag_image = pygame.image.load('images/flag.png')
-flag_image = pygame.transform.scale(flag_image, (60, 120))
-
 img = Image.open('images/castle.jpg')
 img = img.convert('RGBA')
 
@@ -134,12 +131,6 @@ class Coin(Entity):
     def __init__(self, x, y):
         super().__init__(coin_image)
         self.rect.topleft = (x, y)
-
-
-class Flag(Entity):
-    def __init__(self):
-        super().__init__(flag_image)
-        self.rect.topleft = (W - 100, H - GROUND_H - self.rect.height)
 
 
 class Camera:
