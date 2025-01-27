@@ -196,11 +196,13 @@ class Player(Entity):
     def update(self):
         super().update()
 
+        global score
         for goomba in goombas[:]:
             if self.rect.colliderect(goomba.rect):
                 if self.y_speed > 0 and self.rect.bottom <= goomba.rect.top + 10:
                     goombas.remove(goomba)
                     self.y_speed = -self.jump_speed / 2
+                    score += 1
                 else:
                     self.is_out = True
 
