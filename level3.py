@@ -183,6 +183,13 @@ class Player(Entity):
         coins = []
         solid_blocks = []
 
+        global goombas
+        goombas = []
+        for i in range(5):
+            goomba_x = 1500 + i * 200
+            goomba_y = H - GROUND_H - goomba_image.get_height()
+            goombas.append(Goomba(goomba_x, goomba_y))
+
     def jump(self):
         self.y_speed = self.jump_speed
 
@@ -191,7 +198,7 @@ class Player(Entity):
 
         for goomba in goombas[:]:
             if self.rect.colliderect(goomba.rect):
-                if self.y_speed > 0:
+                if self.y_speed > 0 and self.rect.bottom <= goomba.rect.top + 10:
                     goombas.remove(goomba)
                     self.y_speed = -self.jump_speed / 2
                 else:
@@ -335,7 +342,11 @@ while running:
     for goomba in goombas:
         goomba.update()
         if player.rect.colliderect(goomba.rect):
-            player.is_out = True
+            if player.y_speed > 0 and player.rect.bottom <= goomba.rect.top + 10:
+                goombas.remove(goomba)
+                player.y_speed = -player.jump_speed / 2
+            else:
+                player.is_out = True
 
     for goomba in goombas:
         screen.blit(goomba.image, (goomba.rect.x - camera.x, goomba.rect.y - camera.y))
