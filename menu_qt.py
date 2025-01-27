@@ -8,12 +8,12 @@ class Ui_MenuWindow(object):
         MenuWindow.setObjectName("MenuWindow")
         MenuWindow.resize(400, 300)
 
-        self.centralwidget = QtWidgets.QWidget(LoginWindow)
+        self.centralwidget = QtWidgets.QWidget(MenuWindow)
         self.centralwidget.setObjectName("centralwidget")
 
         self.background = QtWidgets.QLabel(self.centralwidget)
         self.background.setGeometry(0, 0, 400, 300)
-        self.background.setPixmap(QtGui.QPixmap("background.jpg"))
+        self.background.setPixmap(QtGui.QPixmap("images/background.jpg"))
         self.background.setScaledContents(True)
 
         self.pushButton_start = QtWidgets.QPushButton(self.centralwidget)

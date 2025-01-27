@@ -180,6 +180,11 @@ class Player(Entity):
             self.is_grounded = False
             self.jump()
 
+        if keys[pygame.K_w]:
+            self.y_speed = -5  
+        elif not keys[pygame.K_w] and not self.is_grounded:
+            self.y_speed += self.gravity
+
     def respawn(self):
         self.is_out = False
         self.is_dead = False
@@ -414,7 +419,7 @@ while running:
         with open('score.txt', 'w') as f:
             f.write(str(score))
         pygame.quit()
-        exec(open('level3.py').read())
+        exec(open('final.py').read())
 
     camera.update(player)
 
