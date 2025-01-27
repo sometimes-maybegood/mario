@@ -341,7 +341,7 @@ while running:
         with open('score.txt', 'w') as f:
             f.write(str(score))
         pygame.quit()
-        exec(open('level4.py').read())
+        exec(open('level5.py').read())
 
     camera.update(player)
 
