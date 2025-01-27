@@ -211,6 +211,7 @@ coins = []
 ladder_x = 1000
 ladder_y = H - GROUND_H - 300
 
+
 running = True
 
 while running:
