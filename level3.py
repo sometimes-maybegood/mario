@@ -12,7 +12,7 @@ FPS = 60
 clock = pygame.time.Clock()
 STEP = 10
 all_sprites = pygame.sprite.Group()
-font_path = 'mario_font.ttf'
+font_path = 'images/mario_font.ttf'
 font_large = pygame.font.Font(font_path, 48)
 font_small = pygame.font.Font(font_path, 24)
 INIT_DELAY = 2000
@@ -25,20 +25,20 @@ retry_text = font_small.render('PRESS ANY KEY', True, (255, 255, 255))
 retry_rect = retry_text.get_rect()
 retry_rect.midtop = (W // 2, H // 2)
 
-block_image = pygame.image.load('block.jpg')
+block_image = pygame.image.load('images/block.jpg')
 block_image = pygame.transform.scale(block_image, (60, 60))
 GROUND_H = block_image.get_height()
 
-coin_block_image = pygame.image.load('coin_block.jpg')
+coin_block_image = pygame.image.load('images/coin_block.jpg')
 coin_block_image = pygame.transform.scale(coin_block_image, (60, 60))
 
-player_image = pygame.image.load('mario.png')
+player_image = pygame.image.load('images/mario.png')
 player_image = pygame.transform.scale(player_image, (50, 75))
 
-flag_image = pygame.image.load('flag.png')
+flag_image = pygame.image.load('images/flag.png')
 flag_image = pygame.transform.scale(flag_image, (60, 120))
 
-img = Image.open('castle.jpg')
+img = Image.open('images/castle.jpg')
 img = img.convert('RGBA')
 
 new_img = Image.new('RGBA', img.size, (0, 0, 0, 0))
@@ -50,12 +50,12 @@ for x in range(img.size[0]):
         if pixel[0] < threshold or pixel[1] < threshold or pixel[2] < threshold:
             new_img.putpixel((x, y), pixel)
 
-new_img.save('castle_no_bg.png')
+new_img.save('images/castle_no_bg.png')
 
-castle_image_no_bg = pygame.image.load('castle_no_bg.png')
+castle_image_no_bg = pygame.image.load('images/castle_no_bg.png')
 castle_image_no_bg = pygame.transform.scale(castle_image_no_bg, (500, 300))
 
-img1 = Image.open('coin.png')
+img1 = Image.open('images/coin.png')
 img1 = img1.convert('RGBA')
 
 new_img1 = Image.new('RGBA', img1.size, (0, 0, 0, 0))
@@ -67,12 +67,12 @@ for x in range(img1.size[0]):
         if pixel1[0] < threshold or pixel1[1] < threshold or pixel1[2] < threshold:
             new_img1.putpixel((x, y), pixel1)
 
-new_img1.save('coin_new.png')
+new_img1.save('images/coin_new.png')
 
-coin_image = pygame.image.load('coin_new.png')
+coin_image = pygame.image.load('images/coin_new.png')
 coin_image = pygame.transform.scale(coin_image, (50, 30))
 
-img2 = Image.open('goomba.jpg')
+img2 = Image.open('images/goomba.jpg')
 img2 = img2.convert('RGBA')
 
 new_img2 = Image.new('RGBA', img2.size, (0, 0, 0, 0))
@@ -84,9 +84,9 @@ for x in range(img2.size[0]):
         if pixel2[0] < threshold or pixel2[1] < threshold or pixel2[2] < threshold:
             new_img2.putpixel((x, y), pixel2)
 
-new_img2.save('goomba_new.png')
+new_img2.save('images/goomba_new.png')
 
-goomba_image = pygame.image.load('goomba_new.png')
+goomba_image = pygame.image.load('images/goomba_new.png')
 goomba_image = pygame.transform.scale(goomba_image, (50, 50))
 
 
