@@ -221,6 +221,12 @@ class Player(Entity):
                 else:
                     self.is_out = True
 
+        for laser in lasers:
+            for fireball_x, fireball_y in laser.fireballs:
+                if self.rect.colliderect(
+                        pygame.Rect(fireball_x, fireball_y, fireball_image.get_width(), fireball_image.get_height())):
+                    self.is_out = True
+
         if self.rect.bottom > H + 100:
             self.is_out = True
 
