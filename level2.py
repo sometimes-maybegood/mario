@@ -36,6 +36,9 @@ coin_block_image = pygame.transform.scale(coin_block_image, (60, 60))
 player_image = pygame.image.load('images/mario.png')
 player_image = pygame.transform.scale(player_image, (50, 75))
 
+flag_image = pygame.image.load('images/flag.png')
+flag_image = pygame.transform.scale(flag_image, (60, 120))
+
 img = Image.open('images/castle.jpg')
 img = img.convert('RGBA')
 
