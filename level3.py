@@ -25,6 +25,9 @@ retry_text = font_small.render('PRESS ANY KEY', True, (255, 255, 255))
 retry_rect = retry_text.get_rect()
 retry_rect.midtop = (W // 2, H // 2)
 
+goomba_image = pygame.image.load('goomba.jpg')
+goomba_image = pygame.transform.scale(goomba_image, (50, 50))
+
 block_image = pygame.image.load('block.jpg')
 block_image = pygame.transform.scale(block_image, (60, 60))
 GROUND_H = block_image.get_height()
@@ -79,16 +82,15 @@ new_img2 = Image.new('RGBA', img2.size, (0, 0, 0, 0))
 
 threshold = 240
 for x in range(img2.size[0]):
-   for y in range(img2.size[1]):
-       pixel2 = img2.getpixel((x, y))
-       if pixel2[0] < threshold or pixel2[1] < threshold or pixel2[2] < threshold:
-           new_img2.putpixel((x, y), pixel2)
+    for y in range(img2.size[1]):
+        pixel2 = img2.getpixel((x, y))
+        if pixel2[0] < threshold or pixel2[1] < threshold or pixel2[2] < threshold:
+            new_img2.putpixel((x, y), pixel2)
 
-new_img2.save('goomba_image.png')
+new_img2.save('goomba_new.png')
 
-goomba_image = pygame.image.load('goomba_image.png')
+goomba_image = pygame.image.load('goomba_new.png')
 goomba_image = pygame.transform.scale(goomba_image, (50, 50))
-
 
 
 class Entity:
@@ -252,10 +254,6 @@ while running:
     clock.tick(FPS)
 
     player.update()
-
-    if player.rect.right >= castle_end_x:
-        pygame.quit()
-        exec(open('level2.py').read())
 
     camera.update(player)
 
