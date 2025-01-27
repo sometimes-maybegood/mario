@@ -1,6 +1,5 @@
 import pygame
 from PIL import Image
-from level2 import score
 
 pygame.init()
 
@@ -24,6 +23,8 @@ game_over = False
 retry_text = font_small.render('PRESS ANY KEY', True, (255, 255, 255))
 retry_rect = retry_text.get_rect()
 retry_rect.midtop = (W // 2, H // 2)
+
+score = 0
 
 block_image = pygame.image.load('images/block.jpg')
 block_image = pygame.transform.scale(block_image, (60, 60))
@@ -72,7 +73,7 @@ new_img1.save('images/coin_new.png')
 coin_image = pygame.image.load('images/coin_new.png')
 coin_image = pygame.transform.scale(coin_image, (50, 30))
 
-img2 = Image.open('images/goomba.jpg')
+img2 = Image.open('goomba.jpg')
 img2 = img2.convert('RGBA')
 
 new_img2 = Image.new('RGBA', img2.size, (0, 0, 0, 0))
@@ -84,9 +85,9 @@ for x in range(img2.size[0]):
         if pixel2[0] < threshold or pixel2[1] < threshold or pixel2[2] < threshold:
             new_img2.putpixel((x, y), pixel2)
 
-new_img2.save('images/goomba_new.png')
+new_img2.save('goomba_new.png')
 
-goomba_image = pygame.image.load('images/goomba_new.png')
+goomba_image = pygame.image.load('goomba_new.png')
 goomba_image = pygame.transform.scale(goomba_image, (50, 50))
 
 
@@ -228,9 +229,10 @@ for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 
     for j in range(5):
         ground_x = i * block_image.get_width()
         ground_y = H - GROUND_H + j * block_image.get_height()
-        if 10 <= i <= 15:
+
+        if i >= 10 and i <= 15:
             ground_y -= 60
-        elif 20 <= i <= 25:
+        elif i >= 20 and i <= 25:
             ground_y += 60
 
         ground_blocks.append((ground_x, ground_y))
