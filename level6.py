@@ -184,6 +184,41 @@ class Player(Entity):
         self.is_out = False
         self.is_dead = False
         self.rect.midbottom = (W // 2, H)
+        self.y_speed = 0
+        self.x_speed = 0
+
+        global coin_blocks
+        coin_blocks = []
+        for i in range(5):
+            coin_x = 1260 + i * block_image.get_width()
+            coin_y = H - GROUND_H - 3 * block_image.get_height()
+            coin_blocks.append((coin_x, coin_y))
+
+        global coins, solid_blocks
+        coins = []
+        solid_blocks = []
+
+        global goombas
+        goombas = []
+        goomba_x = 26 * 60
+        goomba_y = H // 2 + 180
+        path = (21 * 60, 26 * 60)
+        goombas.append(Goomba(goomba_x, goomba_y, path))
+
+        goomba_x = 21 * 60
+        goomba_y = H // 2 + 180
+        path = (21 * 60, 26 * 60)
+        goombas.append(Goomba(goomba_x, goomba_y, path))
+
+        goomba_x = 32 * 60
+        goomba_y = H // 2 + 180
+        path = (32 * 60, 35 * 60)
+        goombas.append(Goomba(goomba_x, goomba_y, path))
+
+        goomba_x = 36 * 60
+        goomba_y = H // 2 + 180
+        path = (32 * 60, 37 * 60)
+        goombas.append(Goomba(goomba_x, goomba_y, path))
 
     def jump(self):
         self.y_speed = self.jump_speed
@@ -191,8 +226,15 @@ class Player(Entity):
     def update(self):
         super().update()
 
-        if self.rect.bottom > H + 150:
-            self.is_out = True
+        global score
+        for goomba in goombas[:]:
+            if self.rect.colliderect(goomba.rect):
+                if self.y_speed > 0 and self.rect.bottom <= goomba.rect.top + 10:
+                    goombas.remove(goomba)
+                    self.y_speed = -self.jump_speed / 2
+                    score += 1
+                else:
+                    self.is_out = True
 
         for laser in lasers:
             for fireball_x, fireball_y in laser.fireballs:
@@ -200,14 +242,56 @@ class Player(Entity):
                         pygame.Rect(fireball_x, fireball_y, fireball_image.get_width(), fireball_image.get_height())):
                     self.is_out = True
 
-        global score
-        if player.is_out:
-            retry_rect.midtop = (W // 2, H // 2)
-            screen.blit(retry_text, retry_rect)
-            pygame.display.flip()
-            pygame.time.wait(2000)
-            player.respawn()
-            score = 0
+        if self.rect.bottom > H + 100:
+            self.is_out = True
+
+
+class Laser:
+    def __init__(self, x, y, num_fireballs):
+        self.fireballs = []
+        for i in range(num_fireballs):
+            fireball_x = x + i * fireball_image.get_width()
+            fireball_y = y
+            self.fireballs.append((fireball_x, fireball_y))
+
+    def update(self):
+        for i, (fireball_x, fireball_y) in enumerate(self.fireballs):
+            self.fireballs[i] = (fireball_x - 5, fireball_y)
+
+    def draw(self, surface, camera):
+        for fireball_x, fireball_y in self.fireballs:
+            surface.blit(fireball_image, (fireball_x - camera.x, fireball_y - camera.y))
+
+
+class Goomba(Entity):
+    def __init__(self, x, y, path):
+        super().__init__(goomba_image)
+        self.rect.topleft = (x, y)
+        self.speed = 1
+        self.path = path
+        self.direction = -1
+
+    def handle_input(self):
+        self.x_speed = self.speed * self.direction
+
+    def update(self):
+        super().update()
+        self.rect.x += self.x_speed
+
+        for block in ground_blocks + ladder_blocks + solid_blocks:
+            if self.rect.colliderect(
+                    pygame.Rect(block[0], block[1], block_image.get_width(), block_image.get_height())):
+                if self.y_speed > 0:
+                    self.y_speed = 0
+                    self.rect.bottom = block[1]
+                elif self.y_speed < 0:
+                    self.y_speed = 0
+                    self.rect.top = block[1] - self.rect.height
+
+        if self.rect.left < self.path[0]:
+            self.speed = -1
+        elif self.rect.right > self.path[1]:
+            self.speed = 1
 
 
 class Coin(Entity):
@@ -231,24 +315,7 @@ class Camera:
 class Castle(Entity):
     def __init__(self):
         super().__init__(castle_image_no_bg)
-        self.rect.topleft = (W + 1400, H - GROUND_H - self.rect.height + 30)
-
-
-class Laser:
-    def __init__(self, x, y, num_fireballs):
-        self.fireballs = []
-        for i in range(num_fireballs):
-            fireball_x = x + i * fireball_image.get_width()
-            fireball_y = y
-            self.fireballs.append((fireball_x, fireball_y))
-
-    def update(self):
-        for i, (fireball_x, fireball_y) in enumerate(self.fireballs):
-            self.fireballs[i] = (fireball_x - 5, fireball_y)
-
-    def draw(self, surface, camera):
-        for fireball_x, fireball_y in self.fireballs:
-            surface.blit(fireball_image, (fireball_x - camera.x, fireball_y - camera.y))
+        self.rect.topleft = (W + 2200, H - GROUND_H - self.rect.height + 30)
 
 
 castle = Castle()
@@ -292,6 +359,27 @@ for i in range(5):
     coin_x = 1260 + i * block_image.get_width()
     coin_y = H - GROUND_H - 3 * block_image.get_height()
     coin_blocks.append((coin_x, coin_y))
+
+goombas = []
+goomba_x = 26 * 60
+goomba_y = H // 2 + 180
+path = (21 * 60, 26 * 60)
+goombas.append(Goomba(goomba_x, goomba_y, path))
+
+goomba_x = 21 * 60
+goomba_y = H // 2 + 180
+path = (21 * 60, 26 * 60)
+goombas.append(Goomba(goomba_x, goomba_y, path))
+
+goomba_x = 32 * 60
+goomba_y = H // 2 + 180
+path = (32 * 60, 35 * 60)
+goombas.append(Goomba(goomba_x, goomba_y, path))
+
+goomba_x = 36 * 60
+goomba_y = H // 2 + 180
+path = (32 * 60, 37 * 60)
+goombas.append(Goomba(goomba_x, goomba_y, path))
 
 solid_blocks = []
 coins = []
@@ -349,17 +437,30 @@ while running:
 
     for laser in lasers:
         laser.update()
-        if laser.fireballs[0][0] < 0:
+        if laser.fireballs and laser.fireballs[0][0] < 0:
             laser.fireballs = []
             laser_x = W + 2000
             laser_y = H // 2
-            lasers[0] = Laser(laser_x, laser_y, randint(1, 3))
+            lasers[0] = Laser(laser_x, laser_y, randint(2, 5))
 
     for laser in lasers:
         laser.draw(screen, camera)
 
+    for goomba in goombas:
+        goomba.update()
+        if player.rect.colliderect(goomba.rect):
+            if player.y_speed > 0 and player.rect.bottom <= goomba.rect.top + 10:
+                goombas.remove(goomba)
+                player.y_speed = -player.jump_speed / 2
+            else:
+                player.is_out = True
+
+    for goomba in goombas:
+        screen.blit(goomba.image, (goomba.rect.x - camera.x, goomba.rect.y - camera.y))
+
+
     current_time = pygame.time.get_ticks()
-    if current_time - last_laser_time > 3000:
+    if current_time - last_laser_time > 4000:
         laser_x = W + 2000
         laser_y = H // 2
         lasers.append(Laser(laser_x, laser_y, randint(1, 3)))
