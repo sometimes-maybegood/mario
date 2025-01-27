@@ -1,6 +1,7 @@
 import pygame
 import random
 import os
+import sys
 
 FPS = 10
 WIDTH = 600
@@ -25,7 +26,6 @@ def load_image(image_name, color_key=None):
 
 
 class Particle(pygame.sprite.Sprite):
-    # сгенерируем частицы разного размера
     fire = [load_image("star.png")]
     for scale in (5, 10, 20):
         fire.append(pygame.transform.scale(fire[0], (scale, scale)))
@@ -35,30 +35,22 @@ class Particle(pygame.sprite.Sprite):
         self.image = random.choice(self.fire)
         self.rect = self.image.get_rect()
 
-        # у каждой частицы своя скорость — это вектор
         self.velocity = [dx, dy]
         # и свои координаты
         self.rect.x, self.rect.y = pos
 
-        # гравитация будет одинаковой (значение константы)
         self.gravity = 1
 
     def update(self):
-        # применяем гравитационный эффект:
-        # движение с ускорением под действием гравитации
         self.velocity[1] += self.gravity
-        # перемещаем частицу
         self.rect.x += self.velocity[0]
         self.rect.y += self.velocity[1]
-        # убиваем, если частица ушла за экран
         if not self.rect.colliderect(screen_rect):
             self.kill()
 
 
 def create_particles(position):
-    # количество создаваемых частиц
     particle_count = 20
-    # возможные скорости
     numbers = range(-5, 6)
     for _ in range(particle_count):
         Particle(position, random.choice(numbers), random.choice(numbers))
@@ -68,9 +60,8 @@ all_sprites = pygame.sprite.Group()
 clock = pygame.time.Clock()
 running = True
 
-# Создаем частицы в случайных местах на экране
 def create_random_particles():
-    if random.random() < 0.1:  # 10% шанс создания частиц
+    if random.random() < 0.1:
         create_particles((random.randint(0, WIDTH), 0))
 
 while running:
@@ -78,7 +69,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    create_random_particles()  # Создаем частицы в случайных местах
+    create_random_particles()
 
     all_sprites.update()
     screen.fill((0, 0, 0))
@@ -87,3 +78,10 @@ while running:
     clock.tick(50)
 
 pygame.quit()
+
+if __name__ == "__main__":
+    try:
+        os.system("python menu.py")
+    except Exception as e:
+        print(f"Ошибка при запуске menu.py: {e}")
+        sys.exit(1)
