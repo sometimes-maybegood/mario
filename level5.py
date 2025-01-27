@@ -94,6 +94,23 @@ new_img2.save('images/goomba_new.png')
 goomba_image = pygame.image.load('images/goomba_new.png')
 goomba_image = pygame.transform.scale(goomba_image, (50, 50))
 
+img3 = Image.open('images/fireball.jpg')
+img3 = img3.convert('RGBA')
+
+new_img3 = Image.new('RGBA', img3.size, (0, 0, 0, 0))
+
+threshold = 240
+for x in range(img3.size[0]):
+    for y in range(img3.size[1]):
+        pixel3 = img3.getpixel((x, y))
+        if pixel3[0] < threshold or pixel3[1] < threshold or pixel3[2] < threshold:
+            new_img3.putpixel((x, y), pixel3)
+
+new_img3.save('images/fireball_new.png')
+
+fireball_image = pygame.image.load('images/fireball_new.png')
+fireball_image = pygame.transform.scale(fireball_image, (30, 30))
+
 
 class Entity:
     def __init__(self, image):
