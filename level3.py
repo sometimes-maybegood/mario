@@ -25,9 +25,6 @@ retry_text = font_small.render('PRESS ANY KEY', True, (255, 255, 255))
 retry_rect = retry_text.get_rect()
 retry_rect.midtop = (W // 2, H // 2)
 
-goomba_image = pygame.image.load('goomba.jpg')
-goomba_image = pygame.transform.scale(goomba_image, (50, 50))
-
 block_image = pygame.image.load('block.jpg')
 block_image = pygame.transform.scale(block_image, (60, 60))
 GROUND_H = block_image.get_height()
@@ -171,6 +168,24 @@ class Player(Entity):
     def jump(self):
         self.y_speed = self.jump_speed
 
+
+class Goomba(Entity):
+    def __init__(self, x, y):
+        super().__init__(goomba_image)
+        self.rect.topleft = (x, y)
+        self.speed = 2
+
+    def handle_input(self):
+        self.x_speed = -self.speed
+
+    def update(self):
+        super().update()
+        self.rect.x += self.x_speed
+
+        if self.rect.left < 0:
+            self.x_speed *= -1
+        elif self.rect.right > W:
+            self.x_speed *= -1
 
 class Coin(Entity):
     def __init__(self, x, y):
