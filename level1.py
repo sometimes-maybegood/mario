@@ -31,7 +31,7 @@ block_image = pygame.transform.scale(block_image, (60, 60))
 GROUND_H = block_image.get_height()
 
 player_image = pygame.image.load('images/mario.png')
-player_image = pygame.transform.scale(player_image, (60, 80))
+player_image = pygame.transform.scale(player_image, (50, 75))
 
 coin_image = pygame.image.load('images/coin.png')
 coin_image = pygame.transform.scale(coin_image, (30, 30))
