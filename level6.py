@@ -205,7 +205,7 @@ class Player(Entity):
             retry_rect.midtop = (W // 2, H // 2)
             screen.blit(retry_text, retry_rect)
             pygame.display.flip()
-            pygame.time.wait(2000)  # Задержка перед респавном
+            pygame.time.wait(2000)
             player.respawn()
             score = 0
 
@@ -233,6 +233,7 @@ class Castle(Entity):
         super().__init__(castle_image_no_bg)
         self.rect.topleft = (W + 1400, H - GROUND_H - self.rect.height + 30)
 
+
 class Laser:
     def __init__(self, x, y, num_fireballs):
         self.fireballs = []
@@ -248,7 +249,6 @@ class Laser:
     def draw(self, surface, camera):
         for fireball_x, fireball_y in self.fireballs:
             surface.blit(fireball_image, (fireball_x - camera.x, fireball_y - camera.y))
-
 
 
 castle = Castle()
@@ -302,7 +302,8 @@ ladder_y = H - GROUND_H - 300
 lasers = []
 laser_x = W + 2000
 laser_y = H // 2
-lasers.append(Laser(laser_x, laser_y, randint(2, 5)))
+lasers.append(Laser(laser_x, laser_y, randint(1, 3)))
+last_laser_time = pygame.time.get_ticks()
 
 running = True
 
@@ -352,11 +353,17 @@ while running:
             laser.fireballs = []
             laser_x = W + 2000
             laser_y = H // 2
-            lasers[0] = Laser(laser_x, laser_y, randint(2, 5))
+            lasers[0] = Laser(laser_x, laser_y, randint(1, 3))
 
     for laser in lasers:
         laser.draw(screen, camera)
 
+    current_time = pygame.time.get_ticks()
+    if current_time - last_laser_time > 3000:
+        laser_x = W + 2000
+        laser_y = H // 2
+        lasers.append(Laser(laser_x, laser_y, randint(1, 3)))
+        last_laser_time = current_time
 
     for i in range(int((W + block_image.get_width()) / block_image.get_width()) + 1):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
