@@ -247,6 +247,12 @@ for i in range(5):
     coin_y = H - GROUND_H - 3 * block_image.get_height()
     coin_blocks.append((coin_x, coin_y))
 
+goombas = []
+for i in range(5):
+    goomba_x = 1500 + i * 200
+    goomba_y = H - GROUND_H - goomba_image.get_height()
+    goombas.append(Goomba(goomba_x, goomba_y))
+
 solid_blocks = []
 coins = []
 
@@ -270,6 +276,10 @@ while running:
 
     player.update()
 
+    if player.rect.right >= castle_end_x:
+        pygame.quit()
+        exec(open('level3.py').read())
+
     camera.update(player)
 
     screen.fill((92, 148, 252))
@@ -288,6 +298,14 @@ while running:
 
     for coin in coins:
         screen.blit(coin_image, (coin[0] - camera.x, coin[1] - camera.y))
+
+    for goomba in goombas:
+        goomba.update()
+        if player.rect.colliderect(goomba.rect):
+            player.is_out = True
+
+    for goomba in goombas:
+        screen.blit(goomba.image, (goomba.rect.x - camera.x, goomba.rect.y - camera.y))
 
     for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
