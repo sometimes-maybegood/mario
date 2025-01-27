@@ -169,6 +169,19 @@ class Player(Entity):
         self.is_out = False
         self.is_dead = False
         self.rect.midbottom = (W // 2, H)
+        self.y_speed = 0
+        self.x_speed = 0
+
+        global coin_blocks
+        coin_blocks = []
+        for i in range(5):
+            coin_x = 1200 + i * block_image.get_width()
+            coin_y = H - GROUND_H - 3 * block_image.get_height()
+            coin_blocks.append((coin_x, coin_y))
+
+        global coins, solid_blocks
+        coins = []
+        solid_blocks = []
 
     def jump(self):
         self.y_speed = self.jump_speed
@@ -191,6 +204,7 @@ class Goomba(Entity):
             self.x_speed *= -1
         elif self.rect.right > W:
             self.x_speed *= -1
+
 
 class Coin(Entity):
     def __init__(self, x, y):
