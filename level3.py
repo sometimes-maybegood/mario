@@ -283,6 +283,8 @@ while running:
     player.update()
 
     if player.rect.right >= castle_end_x:
+        with open('score.txt', 'w') as f:
+            f.write(str(score))
         pygame.quit()
         exec(open('level3.py').read())
 
