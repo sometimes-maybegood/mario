@@ -174,7 +174,7 @@ class Player(Entity):
 
         global coin_blocks
         coin_blocks = []
-        for i in range(5):
+        for i in range(6):
             coin_x = 1200 + i * block_image.get_width()
             coin_y = H - GROUND_H - 3 * block_image.get_height()
             coin_blocks.append((coin_x, coin_y))
@@ -185,7 +185,7 @@ class Player(Entity):
 
         global goombas
         goombas = []
-        for i in range(5):
+        for i in range(8):
             goomba_x = 1500 + i * 200
             goomba_y = H - GROUND_H - goomba_image.get_height()
             goombas.append(Goomba(goomba_x, goomba_y))
@@ -253,7 +253,7 @@ class Camera:
 class Castle(Entity):
     def __init__(self):
         super().__init__(castle_image_no_bg)
-        self.rect.topleft = (W + 1400, H - GROUND_H - self.rect.height + 30)
+        self.rect.topleft = (W + 2200, H - GROUND_H - self.rect.height + 30)
 
 
 castle = Castle()
@@ -263,7 +263,7 @@ camera = Camera(W, H)
 castle_end_x = castle.rect.right
 
 ground_blocks = []
-for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 6 + 1):
     for j in range(5):
         ground_x = i * block_image.get_width()
         ground_y = H - GROUND_H + j * block_image.get_height()
@@ -272,23 +272,27 @@ for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 
             ground_y -= 60
         elif i >= 20 and i <= 25:
             ground_y += 60
+        elif i >= 30 and i <= 35:
+            ground_y -= 120
+        elif i >= 40 and i <= 45:
+            ground_y += 120
 
         ground_blocks.append((ground_x, ground_y))
 
 ladder_blocks = []
 ladder_x = 1000
 ladder_y = H - GROUND_H
-for i in range(4):
+for i in range(5):
     ladder_blocks.append((ladder_x, ladder_y - i * block_image.get_height()))
 
 coin_blocks = []
-for i in range(5):
+for i in range(6):
     coin_x = 1200 + i * block_image.get_width()
     coin_y = H - GROUND_H - 3 * block_image.get_height()
     coin_blocks.append((coin_x, coin_y))
 
 goombas = []
-for i in range(5):
+for i in range(8):
     goomba_x = 1500 + i * 200
     goomba_y = H - GROUND_H - goomba_image.get_height()
     goombas.append(Goomba(goomba_x, goomba_y))
@@ -353,16 +357,16 @@ while running:
     for goomba in goombas:
         screen.blit(goomba.image, (goomba.rect.x - camera.x, goomba.rect.y - camera.y))
 
-    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+    for i in range(int((W + block_image.get_width()) * 2 + 1)):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
 
-    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+    for i in range(int((W + block_image.get_width()) * 2 + 1)):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 180))
 
-    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+    for i in range(int((W + block_image.get_width()) * 2 + 1)):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 240))
 
-    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 4 + 1):
+    for i in range(int((W + block_image.get_width()) * 2 + 1)):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 300))
 
     castle.draw(screen, camera)
