@@ -11,7 +11,7 @@ FPS = 60
 clock = pygame.time.Clock()
 STEP = 10
 all_sprites = pygame.sprite.Group()
-font_path = 'mario_font.ttf'
+font_path = 'images/mario_font.ttf'
 font_large = pygame.font.Font(font_path, 48)
 font_small = pygame.font.Font(font_path, 24)
 INIT_DELAY = 2000
@@ -26,20 +26,20 @@ retry_rect.midtop = (W // 2, H // 2)
 
 score = 0
 
-block_image = pygame.image.load('block.jpg')
+block_image = pygame.image.load('images/block.jpg')
 block_image = pygame.transform.scale(block_image, (60, 60))
 GROUND_H = block_image.get_height()
 
-player_image = pygame.image.load('mario.png')
+player_image = pygame.image.load('images/mario.png')
 player_image = pygame.transform.scale(player_image, (60, 80))
 
-coin_image = pygame.image.load('coin.png')
+coin_image = pygame.image.load('images/coin.png')
 coin_image = pygame.transform.scale(coin_image, (30, 30))
 
-flag_image = pygame.image.load('flag.png')
+flag_image = pygame.image.load('images/flag.png')
 flag_image = pygame.transform.scale(flag_image, (60, 120))
 
-img = Image.open('castle.jpg')
+img = Image.open('images/castle.jpg')
 img = img.convert('RGBA')
 
 new_img = Image.new('RGBA', img.size, (0, 0, 0, 0))
@@ -51,9 +51,9 @@ for x in range(img.size[0]):
         if pixel[0] < threshold or pixel[1] < threshold or pixel[2] < threshold:
             new_img.putpixel((x, y), pixel)
 
-new_img.save('castle_no_bg.png')
+new_img.save('images/castle_no_bg.png')
 
-castle_image_no_bg = pygame.image.load('castle_no_bg.png')
+castle_image_no_bg = pygame.image.load('images/castle_no_bg.png')
 castle_image_no_bg = pygame.transform.scale(castle_image_no_bg, (500, 300))
 
 
