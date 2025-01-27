@@ -2,6 +2,7 @@ import sys
 import pygame
 from PyQt6 import QtWidgets
 from menu_qt import Ui_MenuWindow
+from level1 import st
 
 
 class LoginApp(QtWidgets.QMainWindow):
@@ -13,7 +14,7 @@ class LoginApp(QtWidgets.QMainWindow):
         self.ui.pushButton_record.clicked.connect(self.record)
 
     def start(self):
-        exec(open('level1.py').read())
+        st()
 
     def record(self):
         exec(open('record.py').read())
