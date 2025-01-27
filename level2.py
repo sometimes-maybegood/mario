@@ -268,10 +268,10 @@ while running:
     for i in range(int((W + block_image.get_width()) / block_image.get_width()) + 1):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 180))
 
-    for i in range(int((W + block_image.get_width()) / block_image.get_width()) + 1):
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 2 + 1):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 240))
 
-    for i in range(int((W + block_image.get_width()) / block_image.get_width()) + 1):
+    for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 3 + 1):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 300))
 
     castle.draw(screen, camera)
