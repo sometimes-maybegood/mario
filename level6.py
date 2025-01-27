@@ -1,5 +1,6 @@
 import pygame
 from PIL import Image
+from random import randint
 
 pygame.init()
 
@@ -24,7 +25,11 @@ retry_text = font_small.render('PRESS ANY KEY', True, (255, 255, 255))
 retry_rect = retry_text.get_rect()
 retry_rect.midtop = (W // 2, H // 2)
 
-score = 0
+try:
+    with open('score.txt', 'r') as f:
+        score = int(f.read())
+except FileNotFoundError:
+    score = 0
 
 block_image = pygame.image.load('images/block.jpg')
 block_image = pygame.transform.scale(block_image, (60, 60))
@@ -69,6 +74,40 @@ new_img1.save('images/coin_new.png')
 
 coin_image = pygame.image.load('images/coin_new.png')
 coin_image = pygame.transform.scale(coin_image, (50, 30))
+
+img2 = Image.open('images/goomba.jpg')
+img2 = img2.convert('RGBA')
+
+new_img2 = Image.new('RGBA', img2.size, (0, 0, 0, 0))
+
+threshold = 240
+for x in range(img2.size[0]):
+    for y in range(img2.size[1]):
+        pixel2 = img2.getpixel((x, y))
+        if pixel2[0] < threshold or pixel2[1] < threshold or pixel2[2] < threshold:
+            new_img2.putpixel((x, y), pixel2)
+
+new_img2.save('images/goomba_new.png')
+
+goomba_image = pygame.image.load('images/goomba_new.png')
+goomba_image = pygame.transform.scale(goomba_image, (50, 50))
+
+img3 = Image.open('images/fireball.jpg')
+img3 = img3.convert('RGBA')
+
+new_img3 = Image.new('RGBA', img3.size, (0, 0, 0, 0))
+
+threshold = 240
+for x in range(img3.size[0]):
+    for y in range(img3.size[1]):
+        pixel3 = img3.getpixel((x, y))
+        if pixel3[0] < threshold or pixel3[1] < threshold or pixel3[2] < threshold:
+            new_img3.putpixel((x, y), pixel3)
+
+new_img3.save('images/fireball_new.png')
+
+fireball_image = pygame.image.load('images/fireball_new.png')
+fireball_image = pygame.transform.scale(fireball_image, (30, 30))
 
 
 class Entity:
@@ -188,6 +227,23 @@ class Castle(Entity):
         super().__init__(castle_image_no_bg)
         self.rect.topleft = (W + 1400, H - GROUND_H - self.rect.height + 30)
 
+class Laser:
+    def __init__(self, x, y, num_fireballs):
+        self.fireballs = []
+        for i in range(num_fireballs):
+            fireball_x = x + i * fireball_image.get_width()
+            fireball_y = y
+            self.fireballs.append((fireball_x, fireball_y))
+
+    def update(self):
+        for i, (fireball_x, fireball_y) in enumerate(self.fireballs):
+            self.fireballs[i] = (fireball_x - 5, fireball_y)
+
+    def draw(self, surface, camera):
+        for fireball_x, fireball_y in self.fireballs:
+            surface.blit(fireball_image, (fireball_x - camera.x, fireball_y - camera.y))
+
+
 
 castle = Castle()
 player = Player()
@@ -236,6 +292,11 @@ coins = []
 
 ladder_x = 1000
 ladder_y = H - GROUND_H - 300
+
+lasers = []
+laser_x = W + 2000
+laser_y = H // 2
+lasers.append(Laser(laser_x, laser_y, randint(2, 5)))
 
 running = True
 
