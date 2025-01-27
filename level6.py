@@ -194,6 +194,12 @@ class Player(Entity):
         if self.rect.bottom > H + 150:
             self.is_out = True
 
+        for laser in lasers:
+            for fireball_x, fireball_y in laser.fireballs:
+                if self.rect.colliderect(
+                        pygame.Rect(fireball_x, fireball_y, fireball_image.get_width(), fireball_image.get_height())):
+                    self.is_out = True
+
         global score
         if player.is_out:
             retry_rect.midtop = (W // 2, H // 2)
@@ -339,6 +345,18 @@ while running:
 
     for coin in coins:
         screen.blit(coin_image, (coin[0] - camera.x, coin[1] - camera.y))
+
+    for laser in lasers:
+        laser.update()
+        if laser.fireballs[0][0] < 0:
+            laser.fireballs = []
+            laser_x = W + 2000
+            laser_y = H // 2
+            lasers[0] = Laser(laser_x, laser_y, randint(2, 5))
+
+    for laser in lasers:
+        laser.draw(screen, camera)
+
 
     for i in range(int((W + block_image.get_width()) / block_image.get_width()) + 1):
         screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
