@@ -186,6 +186,17 @@ class Player(Entity):
     def jump(self):
         self.y_speed = self.jump_speed
 
+    def update(self):
+        super().update()
+
+        for goomba in goombas[:]:
+            if self.rect.colliderect(goomba.rect):
+                if self.y_speed > 0:
+                    goombas.remove(goomba)
+                    self.y_speed = -self.jump_speed / 2
+                else:
+                    self.is_out = True
+
 
 class Goomba(Entity):
     def __init__(self, x, y):
