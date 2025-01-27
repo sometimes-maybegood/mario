@@ -181,9 +181,7 @@ class Player(Entity):
             self.jump()
 
         if keys[pygame.K_w]:
-            self.y_speed = -5  
-        elif not keys[pygame.K_w] and not self.is_grounded:
-            self.y_speed += self.gravity
+            self.y_speed = -5
 
     def respawn(self):
         self.is_out = False
@@ -462,7 +460,6 @@ while running:
 
     for goomba in goombas:
         screen.blit(goomba.image, (goomba.rect.x - camera.x, goomba.rect.y - camera.y))
-
 
     current_time = pygame.time.get_ticks()
     if current_time - last_laser_time > 4000:
