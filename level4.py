@@ -206,24 +206,28 @@ class Player(Entity):
                 else:
                     self.is_out = True
 
+        if self.rect.bottom > H + 100:
+            self.is_out = True
+
 
 class Goomba(Entity):
     def __init__(self, x, y):
         super().__init__(goomba_image)
         self.rect.topleft = (x, y)
-        self.speed = 2
+        self.speed = 1
+        self.direction = -1
 
     def handle_input(self):
-        self.x_speed = -self.speed
+        self.x_speed = self.speed * self.direction
 
     def update(self):
         super().update()
         self.rect.x += self.x_speed
 
         if self.rect.left < 0:
-            self.x_speed *= -1
-        elif self.rect.right > W:
-            self.x_speed *= -1
+            self.direction *= -1
+        elif self.rect.right > W + 2200:
+            self.direction *= -1
 
 
 class Coin(Entity):
