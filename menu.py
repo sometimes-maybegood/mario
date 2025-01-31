@@ -22,7 +22,7 @@ class MenuApp(QtWidgets.QMainWindow):
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    window = LoginApp()
+    window = MenuApp()
     window.show()
     sys.exit(app.exec())
 

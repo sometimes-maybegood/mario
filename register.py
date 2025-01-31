@@ -1,6 +1,7 @@
 import sys
 import pygame
 from PyQt6 import QtWidgets
+from PyQt6.QtWidgets import QMessageBox
 from login import Ui_LoginWindow
 from menu import MenuApp
 
@@ -12,6 +13,14 @@ class LoginApp(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.ui.pushButton_register.clicked.connect(self.register)
         self.ui.pushButton_login.clicked.connect(self.login)
+
+    def show_error_message(self, title, message):
+        error = QMessageBox()
+        error.setWindowTitle(title)
+        error.setText(message)
+        error.setIcon(QMessageBox.Icon.Warning)
+        error.setStandardButtons(QMessageBox.StandardButton.Ok)
+        error.exec()
 
     def register(self):
         username = self.ui.lineEdit_username.text()
