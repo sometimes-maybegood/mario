@@ -2,6 +2,7 @@ import sys
 import pygame
 from PyQt6 import QtWidgets
 from login import Ui_LoginWindow
+from menu import MenuApp
 
 
 class LoginApp(QtWidgets.QMainWindow):

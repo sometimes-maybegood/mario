@@ -5,7 +5,7 @@ from menu_qt import Ui_MenuWindow
 from level1 import st
 
 
-class LoginApp(QtWidgets.QMainWindow):
+class MenuApp(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MenuWindow()
