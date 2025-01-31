@@ -47,7 +47,24 @@ class LoginApp(QtWidgets.QMainWindow):
     def login(self):
         username = self.ui.lineEdit_username.text()
         password = self.ui.lineEdit_password.text()
-        print(f"Вход: {username}, Пароль: {password}")
+
+        if not username or not password:
+            self.show_error_message("Ошибка", "Логин и пароль не должны быть пустыми.")
+            return
+
+        conn = sqlite3.connect('users.db')
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password))
+        user = cursor.fetchone()
+
+        if user:
+            print(f"Вход успешен: {username}")
+            self.open_menu()
+        else:
+            self.show_error_message("Ошибка", "Неверный логин или пароль.")
+
+        conn.close()
 
     def open_menu(self):
         self.menu_window = MenuApp()
