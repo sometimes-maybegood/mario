@@ -2,6 +2,7 @@ import pygame
 from PIL import Image
 from random import randint
 from final import st6
+import sqlite3
 
 def st5():
     pygame.init()
@@ -214,6 +215,17 @@ def st5():
         if player.rect.right >= castle_end_x:
             with open('score.txt', 'w') as f:
                 f.write(str(score))
+            with open('score.txt', 'w') as f:
+                score = int(f.readline().strip())
+            with open('user.txt', 'r') as user_file:
+                name = user_file.readline().strip()
+            conn = sqlite3.connect('scores.db')
+            cursor = conn.cursor()
+
+            cursor.execute('INSERT INTO records (name, score) VALUES (?, ?)', (name, score))
+
+            conn.commit()
+            conn.close()
             pygame.quit()
             st6()
 

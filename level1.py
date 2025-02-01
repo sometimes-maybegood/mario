@@ -3,7 +3,7 @@ from PIL import Image
 from level2 import st1
 
 
-def st():
+def st(current_user):
     pygame.init()
     global W, H, screen, FPS, clock, STEP, all_sprites, font_path, font_large, font_small, INIT_DELAY
     global spawn_delay, DECREASE_BASE, last_spawn_time, game_over, retry_text, retry_rect, score
@@ -135,13 +135,6 @@ def st():
     pygame.quit()
 
 
-
-
-
-
-
-
-
 class Entity:
     def __init__(self, image):
         self.image = image
@@ -238,12 +231,3 @@ class Castle(Entity):
         print(W)
         super().__init__(castle_image_no_bg)
         self.rect.topleft = (W + 1400, H - GROUND_H - self.rect.height + 30)
-
-
-
-
-
-
-
-
-
