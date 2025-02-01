@@ -6,10 +6,11 @@ from level1 import st
 
 
 class MenuApp(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, current_user=None):
         super().__init__()
         self.ui = Ui_MenuWindow()
         self.ui.setupUi(self)
+        self.current_user = current_user
         self.ui.pushButton_start.clicked.connect(self.start)
         self.ui.pushButton_record.clicked.connect(self.record)
 

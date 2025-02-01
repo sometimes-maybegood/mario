@@ -14,6 +14,7 @@ class LoginApp(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.ui.pushButton_register.clicked.connect(self.register)
         self.ui.pushButton_login.clicked.connect(self.login)
+        self.current_user = None
 
     def show_error_message(self, title, message):
         error = QMessageBox()
@@ -38,6 +39,7 @@ class LoginApp(QtWidgets.QMainWindow):
             cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, password))
             conn.commit()
             print(f"Регистрация успешна: {username}")
+            self.current_user = username
             self.open_menu()
         except sqlite3.IntegrityError:
             self.show_error_message("Ошибка", "Пользователь с таким логином уже существует.")
@@ -60,6 +62,7 @@ class LoginApp(QtWidgets.QMainWindow):
 
         if user:
             print(f"Вход успешен: {username}")
+            self.current_user = username
             self.open_menu()
         else:
             self.show_error_message("Ошибка", "Неверный логин или пароль.")
@@ -67,7 +70,7 @@ class LoginApp(QtWidgets.QMainWindow):
         conn.close()
 
     def open_menu(self):
-        self.menu_window = MenuApp()
+        self.menu_window = MenuApp(current_user=self.current_user)
         self.menu_window.show()
         self.close()
 

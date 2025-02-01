@@ -390,5 +390,3 @@ class Castle(Entity):
     def __init__(self):
         super().__init__(castle_image_no_bg)
         self.rect.topleft = (W + 2200, H - GROUND_H - self.rect.height + 30)
-
-
