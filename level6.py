@@ -4,6 +4,9 @@ from random import randint
 from final import st6
 import sqlite3
 
+goombas = []
+
+
 def st5():
     pygame.init()
     global W, H, screen, FPS, clock, STEP, all_sprites, font_path, font_large, font_small, INIT_DELAY
@@ -12,7 +15,7 @@ def st5():
     global castle_image_no_bg, player, castle, camera, castle_end_x, ladder_x, ladder_y, ground_blocks
     global ground_x, ground_y, running, score_rect, score_surface, finish_delay, coin_block_image, img1, new_img1, pixel1
     global coin_image, coins, coin_blocks, solid_blocks, ladder_blocks
-    global goomba_image, fireball_image, lasers
+    global goomba_image, fireball_image, lasers, goombas
     pygame.init()
 
     W = 800
@@ -101,7 +104,7 @@ def st5():
     new_img2.save('images/goomba_new.png')
 
     goomba_image = pygame.image.load('images/goomba_new.png')
-    goomba_image = pygame.transform.scale(goomba_image, (50, 50))
+    goomba_image = pygame.transform.scale(goomba_image, (40, 40))
 
     img3 = Image.open('images/fireball.jpg')
     img3 = img3.convert('RGBA')
@@ -278,10 +281,10 @@ def st5():
             lasers.append(Laser(laser_x, laser_y, randint(1, 3)))
             last_laser_time = current_time
 
-        for i in range(int((W + block_image.get_width()) / block_image.get_width()) + 1):
+        for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 2 + 1):
             screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 120))
 
-        for i in range(int((W + block_image.get_width()) / block_image.get_width()) + 1):
+        for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 2 + 1):
             screen.blit(block_image, (i * block_image.get_width() - camera.x, H - GROUND_H - camera.y + 180))
 
         for i in range(int((W + block_image.get_width()) / block_image.get_width()) * 2 + 1):
@@ -521,5 +524,3 @@ class Castle(Entity):
     def __init__(self):
         super().__init__(castle_image_no_bg)
         self.rect.topleft = (W + 2200, H - GROUND_H - self.rect.height + 30)
-
-

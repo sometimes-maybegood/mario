@@ -2,6 +2,9 @@ import pygame
 from PIL import Image
 from level5 import st4
 
+goombas = []
+
+
 def st3():
     pygame.init()
     global W, H, screen, FPS, clock, STEP, all_sprites, font_path, font_large, font_small, INIT_DELAY
@@ -9,7 +12,7 @@ def st3():
     global block_image, GROUND_H, player_image, coin_image, img, new_img, pixel, threshold
     global castle_image_no_bg, player, castle, camera, castle_end_x, ladder_x, ladder_y, ground_blocks
     global ground_x, ground_y, running, score_rect, score_surface, finish_delay, coin_block_image, img1, new_img1, pixel1
-    global coin_image, coins, coin_blocks, solid_blocks, ladder_blocks
+    global coin_image, coins, coin_blocks, solid_blocks, ladder_blocks, goombas
     global goomba_image
     pygame.init()
 
@@ -99,7 +102,7 @@ def st3():
     new_img2.save('images/goomba_new.png')
 
     goomba_image = pygame.image.load('images/goomba_new.png')
-    goomba_image = pygame.transform.scale(goomba_image, (50, 50))
+    goomba_image = pygame.transform.scale(goomba_image, (40, 40))
     castle = Castle()
     player = Player()
     camera = Camera(W, H)
@@ -328,7 +331,7 @@ class Player(Entity):
         solid_blocks = []
 
         global goombas
-        goombas = []
+        goombas.clear()
         for i in range(8):
             goomba_x = 1500 + i * 200
             goomba_y = H - GROUND_H - goomba_image.get_height()

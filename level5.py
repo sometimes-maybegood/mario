@@ -3,6 +3,8 @@ from PIL import Image
 from random import randint
 from level6 import st5
 
+goombas = []
+
 
 def st4():
     pygame.init()
@@ -12,7 +14,7 @@ def st4():
     global castle_image_no_bg, player, castle, camera, castle_end_x, ladder_x, ladder_y, ground_blocks
     global ground_x, ground_y, running, score_rect, score_surface, finish_delay, coin_block_image, img1, new_img1, pixel1
     global coin_image, coins, coin_blocks, solid_blocks, ladder_blocks
-    global goomba_image, fireball_image, lasers
+    global goomba_image, fireball_image, lasers, goombas
     pygame.init()
 
     W = 800
@@ -101,7 +103,7 @@ def st4():
     new_img2.save('images/goomba_new.png')
 
     goomba_image = pygame.image.load('images/goomba_new.png')
-    goomba_image = pygame.transform.scale(goomba_image, (50, 50))
+    goomba_image = pygame.transform.scale(goomba_image, (40, 40))
 
     img3 = Image.open('images/fireball.jpg')
     img3 = img3.convert('RGBA')
