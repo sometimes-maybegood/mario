@@ -1,7 +1,6 @@
 import pygame
 import random
 import os
-import sys
 
 
 def st6():
@@ -37,6 +36,7 @@ def st6():
         clock.tick(FPS)
 
     pygame.quit()
+    os.system('menu.py')
 
 
 def load_image(image_name, color_key=None):
@@ -93,10 +93,3 @@ def create_random_particles():
     if random.random() < 0.1:
         create_particles((random.randint(0, WIDTH), 0))
 
-
-if __name__ == "__main__":
-    try:
-        os.system("python menu.py")
-    except Exception as e:
-        print(f"Ошибка при запуске menu.py: {e}")
-        sys.exit(1)
