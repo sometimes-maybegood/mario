@@ -8,13 +8,17 @@ class ScoreboardApp(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Таблица рекордов")
-        self.setGeometry(100, 100, 600, 400)
+        self.resize(400, 300)
 
         self.table_widget = QtWidgets.QTableWidget(self)
         self.setCentralWidget(self.table_widget)
 
         self.table_widget.setColumnCount(2)
         self.table_widget.setHorizontalHeaderLabels(["Имя", "Счет"])
+        self.table_widget.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+
+        self.table_widget.horizontalHeader().setStretchLastSection(True)
+        self.table_widget.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
 
         self.load_data()
 
@@ -22,7 +26,7 @@ class ScoreboardApp(QtWidgets.QMainWindow):
         conn = sqlite3.connect('scores.db')
         cursor = conn.cursor()
 
-        cursor.execute('SELECT * FROM scores ORDER BY score DESC')
+        cursor.execute('SELECT name, score FROM scores ORDER BY score DESC')
         records = cursor.fetchall()
 
         self.table_widget.setRowCount(len(records))
