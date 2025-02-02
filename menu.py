@@ -3,6 +3,7 @@ import pygame
 from PyQt6 import QtWidgets
 from menu_qt import Ui_MenuWindow
 from level1 import st
+from record import ScoreboardApp
 
 
 class MenuApp(QtWidgets.QMainWindow):
@@ -21,7 +22,9 @@ class MenuApp(QtWidgets.QMainWindow):
         self.close()
 
     def record(self):
-        exec(open('record.py').read())
+        self.menu_window = ScoreboardApp()
+        self.menu_window.show()
+        self.close()
 
 
 def main():
