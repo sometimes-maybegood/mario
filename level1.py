@@ -3,7 +3,7 @@ from PIL import Image
 from level2 import st1
 
 
-def st(current_user):
+def st():
     pygame.init()
     global W, H, screen, FPS, clock, STEP, all_sprites, font_path, font_large, font_small, INIT_DELAY
     global spawn_delay, DECREASE_BASE, last_spawn_time, game_over, retry_text, retry_rect, score

@@ -18,6 +18,7 @@ class MenuApp(QtWidgets.QMainWindow):
 
     def start(self):
         st()
+        self.close()
 
     def record(self):
         exec(open('record.py').read())
