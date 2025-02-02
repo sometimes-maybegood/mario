@@ -219,9 +219,9 @@ def st5():
             with open('score.txt', 'w') as f:
                 f.write(str(score))
             with open('score.txt', 'w') as f:
-                score = int(f.readline().strip())
-            with open('user.txt', 'r') as user_file:
-                name = user_file.readline().strip()
+                score = int(f.read())
+            with open('user.txt', 'r') as f:
+                name = f.read()
             conn = sqlite3.connect('scores.db')
             cursor = conn.cursor()
 

@@ -19,7 +19,6 @@ class MenuApp(QtWidgets.QMainWindow):
 
     def start(self):
         st()
-        self.close()
 
     def record(self):
         self.menu_window = ScoreboardApp()
