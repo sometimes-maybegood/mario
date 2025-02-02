@@ -46,7 +46,6 @@ def st6():
             self.rect = self.image.get_rect()
 
             self.velocity = [dx, dy]
-            # и свои координаты
             self.rect.x, self.rect.y = pos
 
             self.gravity = 1
