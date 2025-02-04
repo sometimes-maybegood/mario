@@ -218,9 +218,8 @@ def st5():
         if player.rect.right >= castle_end_x:
             with open('score.txt', 'w') as f:
                 f.write(str(score))
-            name = ''
             with open('user.txt', 'r') as user_file:
-                user_file.write(name)
+                name = user_file.readline().strip()
             conn = sqlite3.connect('scores.db')
             cursor = conn.cursor()
 
