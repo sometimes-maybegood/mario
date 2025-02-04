@@ -218,6 +218,16 @@ def st5():
         if player.rect.right >= castle_end_x:
             with open('score.txt', 'w') as f:
                 f.write(str(score))
+            name = ''
+            with open('user.txt', 'r') as user_file:
+                user_file.write(name)
+            conn = sqlite3.connect('scores.db')
+            cursor = conn.cursor()
+
+            cursor.execute('INSERT INTO scores (name, score) VALUES (?, ?)', (name, score))
+
+            conn.commit()
+            conn.close()
             pygame.quit()
             st6()
 
