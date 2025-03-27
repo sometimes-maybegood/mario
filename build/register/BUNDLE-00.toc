@@ -1,1 +1,0 @@
-([('register', '/Users/marat/Documents/mario/dist/register', 'EXECUTABLE')],)
