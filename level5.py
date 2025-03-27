@@ -105,7 +105,7 @@ def st4():
     goomba_image = pygame.image.load('images/goomba_new.png')
     goomba_image = pygame.transform.scale(goomba_image, (40, 40))
 
-    img3 = Image.open('images/fireball.jpg')
+    img3 = Image.open('images/fireball.png')
     img3 = img3.convert('RGBA')
 
     new_img3 = Image.new('RGBA', img3.size, (0, 0, 0, 0))
