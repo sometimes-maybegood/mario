@@ -79,6 +79,7 @@ def main():
     app = QtWidgets.QApplication(sys.argv)
     window = LoginApp()
     window.show()
+    app.showFullScreen()
     sys.exit(app.exec())
 
 
