@@ -62,4 +62,5 @@ if __name__ == "__main__":
     ui = Ui_MenuWindow()
     ui.setupUi(LoginWindow)
     LoginWindow.show()
+    app.showFullScreen()
     sys.exit(app.exec())
