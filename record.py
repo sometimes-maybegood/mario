@@ -42,6 +42,7 @@ def main():
     app = QtWidgets.QApplication(sys.argv)
     window = ScoreboardApp()
     window.show()
+    app.showFullScreen()
     sys.exit(app.exec())
 
 
